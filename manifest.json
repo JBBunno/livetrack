@@ -1,0 +1,22 @@
+{
+  "name": "PalmCrest LiveTrack",
+  "short_name": "LiveTrack",
+  "description": "PalmCrest Shutdown Schedule & Work Orders",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b1c33",
+  "theme_color": "#0b1c33",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://static.wixstatic.com/media/ebac84_ec73f8d58e184bc0a84f6118c85c88c9~mv2.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://static.wixstatic.com/media/ebac84_ec73f8d58e184bc0a84f6118c85c88c9~mv2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
