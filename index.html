@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,14 +215,14 @@
 </head>
 <body>
 <div id="app">
-
+ 
   <div id="loading">
     <div class="load-logo">PalmCrest</div>
     <div class="load-sub">LiveTrack</div>
     <div class="load-bar"><div class="load-progress" id="loadBar"></div></div>
     <div class="load-status" id="loadStatus">Loading data...</div>
   </div>
-
+ 
   <div id="screen-dashboard" class="screen">
     <div class="topbar"><span class="topbar-icon"></span><span class="topbar-brand" onclick="adminTap()">PalmCrest LiveTrack</span><span class="topbar-icon"></span></div>
     <div class="scroll-area">
@@ -249,7 +248,7 @@
       <button class="nav-btn" id="nav-areaprogress" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
-
+ 
   <div id="screen-workorders" class="screen">
     <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Work Orders</span><span style="width:70px"></span></div>
     <div class="search-bar">
@@ -284,7 +283,7 @@
       <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
-
+ 
   <div id="screen-taskdetail" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('workorders')">◀ Work Orders</span><span style="flex:1"></span></div>
     <div class="detail-content" id="taskDetailContent"></div>
@@ -295,7 +294,7 @@
       <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
-
+ 
   <div id="screen-editprogress" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('taskdetail')">◀ Back</span><span class="topbar-brand">Update Progress</span><span style="width:24px"></span></div>
     <div class="edit-body">
@@ -313,7 +312,7 @@
       <button class="save-btn" id="saveBtn" onclick="saveProgress()">Save → Update Scheduler</button>
     </div>
   </div>
-
+ 
   <div id="screen-documents" class="screen">
     <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Documents</span><span style="width:70px"></span></div>
     <div class="scroll-area">
@@ -327,7 +326,7 @@
       <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
-
+ 
   <div id="screen-areaprogress" class="screen">
     <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Area Progress</span><span style="width:70px"></span></div>
     <div class="scroll-area">
@@ -359,7 +358,7 @@
       <button class="nav-btn active"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
-
+ 
   <div id="screen-emergency" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('dashboard')">◀ Back</span><span class="topbar-brand">Emergency</span><span style="width:24px"></span></div>
     <div class="emerg-body">
@@ -369,7 +368,7 @@
       <button class="emerg-item-btn" onclick="openDoc('first-aid')">First Aid Information</button>
     </div>
   </div>
-
+ 
   <div id="screen-admin" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('dashboard')">◀ Back</span><span class="topbar-brand">Admin</span><span style="width:60px"></span></div>
     <div id="adminPinWrap" class="admin-pin-wrap">
@@ -400,13 +399,13 @@
       <button class="admin-save-btn" id="adminSaveBtn" onclick="saveAdminConfig()">Save Changes</button>
     </div>
   </div>
-
+ 
   <div id="toast"></div>
 </div>
-
+ 
 <script>
 const EXEC_URL = 'https://script.google.com/macros/s/AKfycbwVEauHZ0YbwYaIl976cYLKM3QeN3iPcq6G1-LOhJA63ILc3m99ZAqJBsb6nTwd_3Wj4Q/exec';
-
+ 
 const DOCS = [
   { key: 'first-aid',          label: 'First Aid Information',   style: 'red',      url: '#' },
   { key: 'emergency-response', label: 'Emergency Response',      style: 'red',      url: '#' },
@@ -426,7 +425,7 @@ const DOCS = [
   { key: 'evac',               label: 'Evac Plans',              style: 'dark',     url: '#' },
   { key: 'emergency-contacts', label: 'Emergency Contacts',      style: 'dark',     url: '#', hidden: true },
 ];
-
+ 
 function renderDocGrid() {
   const grid = document.getElementById('docGrid');
   let html = '';
@@ -437,7 +436,7 @@ function renderDocGrid() {
   });
   grid.innerHTML = html;
 }
-
+ 
 function openDoc(key) {
   const doc = DOCS.find(function(d) { return d.key === key; });
   let url = doc ? doc.url : null;
@@ -448,10 +447,10 @@ function openDoc(key) {
     showToast('Document URL not configured yet', true);
   }
 }
-
+ 
 let allTasks = [], summaryData = [], currentArea = 0, selectedTask = null, currentProgress = 0;
 let expandedWOs = new Set(), editMode = 'task', selectedWONumber = null;
-
+ 
 function loadData() {
   setLoad(20, 'Connecting...');
   fetch(EXEC_URL + '?action=data', { redirect: 'follow' })
@@ -475,11 +474,11 @@ function loadData() {
         '<button onclick="location.reload()" style="background:#1a6eb5;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:14px;cursor:pointer;">Retry</button></div>';
     });
 }
-
+ 
 function setLoad(pct, msg) { document.getElementById('loadBar').style.width = pct + '%'; document.getElementById('loadStatus').textContent = msg; }
-
+ 
 function applyNotes(data) { document.getElementById('dashNotice').textContent = (data && data.note) ? data.note : 'No notices at this time.'; }
-
+ 
 function applySummary(data) {
   summaryData = Array.isArray(data) ? data : [];
   if (summaryData.length > 0) {
@@ -492,13 +491,13 @@ function applySummary(data) {
     renderAreaProgress();
   }
 }
-
+ 
 function fmt(val) {
   if (val === null || val === undefined || val === '') return '—';
   if (typeof val === 'number') return Number.isInteger(val) ? val : parseFloat(val.toFixed(1));
   return val;
 }
-
+ 
 function applyWOs(data) {
   allTasks = (Array.isArray(data) ? data : []).map(function(r) {
     return { row: r[0], name: r[1], woNumber: r[2], taskNumber: r[3], duration: r[4], pctComplete: r[5], start: r[6], finish: r[7], team: r[8], floc: r[9], resource: r[10], pctProgress: r[11], woHeader: r[12], subTeam: r[13], group: r[14], notes: r[15], woStatus: r[16] };
@@ -506,16 +505,16 @@ function applyWOs(data) {
   populateFilterOptions();
   renderWOList();
 }
-
+ 
 function populateFilterOptions() { fillSelect('filterTeam', 'team', allTasks, 'All Teams'); updateCascadingFilters(); }
-
+ 
 function fillSelect(id, key, tasks, label) {
   const sel = document.getElementById(id);
   const current = sel.value;
   const vals = [...new Set(tasks.map(function(t) { return t[key]; }).filter(Boolean))].sort();
   sel.innerHTML = '<option value="">' + label + '</option>' + vals.map(function(v) { return '<option value="' + v + '"' + (v === current ? ' selected' : '') + '>' + v + '</option>'; }).join('');
 }
-
+ 
 function updateCascadingFilters() {
   const team = document.getElementById('filterTeam').value;
   const subTeam = document.getElementById('filterSubTeam').value;
@@ -528,23 +527,23 @@ function updateCascadingFilters() {
   fillSelect('filterResource', 'resource', afterGroup, 'All Resources');
   fillSelect('filterStatus', 'woStatus', afterGroup, 'All Statuses');
 }
-
+ 
 function toggleFilterPanel() { document.getElementById('filterPanel').classList.toggle('open'); document.getElementById('filterToggleBtn').classList.toggle('active'); }
-
+ 
 function clearFilters() {
   ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].forEach(function(id) { document.getElementById(id).value = ''; });
   document.getElementById('searchInput').value = '';
   updateCascadingFilters(); applyFilters();
 }
-
+ 
 function applyFilters() { updateCascadingFilters(); renderWOList(); updateFilterBadge(); }
-
+ 
 function updateFilterBadge() {
   const active = ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].filter(function(id) { return document.getElementById(id).value; }).length;
   const keyword = document.getElementById('searchInput').value;
   document.getElementById('filterToggleBtn').textContent = (active + (keyword ? 1 : 0)) > 0 ? 'Filter (' + (active + (keyword ? 1 : 0)) + ')' : 'Filter';
 }
-
+ 
 function getFilteredTasks() {
   const keyword = (document.getElementById('searchInput').value || '').toLowerCase();
   const team = document.getElementById('filterTeam').value;
@@ -562,7 +561,7 @@ function getFilteredTasks() {
     return true;
   });
 }
-
+ 
 function renderWOList() {
   const list = document.getElementById('woList');
   const filtered = getFilteredTasks();
@@ -597,15 +596,15 @@ function renderWOList() {
   });
   list.innerHTML = html;
 }
-
+ 
 function toggleWO(woNum) { if (expandedWOs.has(woNum)) expandedWOs.delete(woNum); else expandedWOs.add(woNum); renderWOList(); }
-
+ 
 function selectTask(rowNum) {
   selectedTask = allTasks.find(function(t) { return t.row === rowNum; });
   if (!selectedTask) return;
   renderTaskDetail(); showScreen('taskdetail');
 }
-
+ 
 function renderTaskDetail() {
   const t = selectedTask;
   const pct = (t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0;
@@ -629,12 +628,12 @@ function renderTaskDetail() {
     (t.notes ? '<div class="detail-cell full"><div class="detail-cell-label">Notes</div><div class="detail-cell-value">' + t.notes + '</div></div>' : '') +
     '</div><button class="edit-task-btn" onclick="openEditScreen()">Update Progress</button>';
 }
-
+ 
 function formatDate(val) {
   if (!val) return '—';
   try { const d = new Date(val); if (isNaN(d)) return val; return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch(e) { return val; }
 }
-
+ 
 function openEditScreen() {
   editMode = 'task'; selectedWONumber = null;
   const t = selectedTask;
@@ -648,7 +647,7 @@ function openEditScreen() {
   document.getElementById('saveBtn').classList.remove('saving');
   showScreen('editprogress');
 }
-
+ 
 function openUpdateWO(woNum) {
   editMode = 'wo'; selectedWONumber = woNum;
   const tasks = allTasks.filter(function(t) { return t.woNumber === woNum; });
@@ -664,10 +663,10 @@ function openUpdateWO(woNum) {
   document.getElementById('saveBtn').classList.remove('saving');
   showScreen('editprogress');
 }
-
+ 
 function changeProgress(delta) { currentProgress = Math.max(0, Math.min(100, currentProgress + delta)); document.getElementById('progressDisplay').textContent = currentProgress; document.getElementById('progressSlider').value = currentProgress; }
 function syncSlider() { currentProgress = parseInt(document.getElementById('progressSlider').value); document.getElementById('progressDisplay').textContent = currentProgress; }
-
+ 
 function saveProgress() {
   if (editMode === 'wo') { saveWOProgress(); return; }
   const btn = document.getElementById('saveBtn');
@@ -683,7 +682,7 @@ function saveProgress() {
       btn.textContent = 'Save → Update Scheduler'; btn.disabled = false; btn.classList.remove('saving');
     });
 }
-
+ 
 function saveWOProgress() {
   var btn = document.getElementById('saveBtn');
   btn.textContent = 'Saving...'; btn.disabled = true; btn.classList.add('saving');
@@ -711,7 +710,7 @@ function saveWOProgress() {
   script.src = EXEC_URL + '?action=updateWO&woNumber=' + encodeURIComponent(selectedWONumber) + '&pctProgress=' + encodeURIComponent(currentProgress) + '&notes=' + encodeURIComponent(notes) + '&callback=' + cbName;
   document.body.appendChild(script);
 }
-
+ 
 function renderAreaProgress(a) {
   if (!a) { if (summaryData.length === 0) return; a = summaryData[currentArea]; }
   document.getElementById('areaName').textContent = a.area || '—';
@@ -725,7 +724,7 @@ function renderAreaProgress(a) {
   document.getElementById('ap-ff').textContent = formatDate(a.forecastFinish);
   document.getElementById('ap-hlc').textContent = fmt(a.hoursToCritical);
 }
-
+ 
 function changeArea(dir) {
   if (summaryData.length === 0) return;
   currentArea = (currentArea + dir + summaryData.length) % summaryData.length;
@@ -737,14 +736,14 @@ function changeArea(dir) {
     .then(function(data) { if (data && data.success) renderAreaProgress(data.area); else { showToast('Could not load area data', true); renderAreaProgress(); } })
     .catch(function() { showToast('Could not load area data', true); renderAreaProgress(); });
 }
-
+ 
 function showScreen(id) { document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); }); document.getElementById('screen-' + id).classList.add('active'); }
 function setNav(active) { document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); }); const btn = document.getElementById('nav-' + active); if (btn) btn.classList.add('active'); }
 function showToast(msg, isError) { const t = document.getElementById('toast'); t.textContent = msg; t.className = isError ? 'error' : ''; t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 3000); }
-
+ 
 const ADMIN_PIN = '1234';
 let pinEntry = '', adminTapCount = 0, adminTapTimer = null;
-
+ 
 function adminTap() {
   adminTapCount++;
   clearTimeout(adminTapTimer);
@@ -757,7 +756,7 @@ function adminTap() {
     showScreen('admin');
   }
 }
-
+ 
 function pinKey(k) {
   if (pinEntry.length >= 4) return;
   pinEntry += k; updatePinDots();
@@ -774,10 +773,10 @@ function pinKey(k) {
     }, 200);
   }
 }
-
+ 
 function pinDel() { pinEntry = pinEntry.slice(0, -1); updatePinDots(); document.getElementById('pinError').textContent = ''; }
 function updatePinDots() { for (let i = 0; i < 4; i++) { document.getElementById('pd' + i).classList.toggle('filled', i < pinEntry.length); } }
-
+ 
 function renderAdminDocs() {
   const list = document.getElementById('adminDocList');
   let html = '';
@@ -796,12 +795,12 @@ function renderAdminDocs() {
   });
   list.innerHTML = html;
 }
-
+ 
 function adminToggleHidden(idx, isVisible) {
   const row = document.getElementById('admin-row-' + idx);
   if (isVisible) row.classList.remove('hidden-row'); else row.classList.add('hidden-row');
 }
-
+ 
 function saveAdminConfig() {
   const btn = document.getElementById('adminSaveBtn');
   btn.disabled = true; btn.textContent = 'Saving...';
@@ -819,7 +818,7 @@ function saveAdminConfig() {
     .then(function() { showToast('Config saved'); btn.disabled = false; btn.textContent = 'Save Changes'; showScreen('documents'); setNav('documents'); })
     .catch(function() { showToast('Saved locally — sheet update failed', true); btn.disabled = false; btn.textContent = 'Save Changes'; });
 }
-
+ 
 loadData();
 </script>
 </body>
