@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="LiveTrack" />
@@ -35,47 +35,36 @@
     --font-body: 'Inter', sans-serif;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; }
-  body { background: var(--navy); color: var(--text-primary); font-family: var(--font-body); font-size: 15px; min-height: 100vh; display: flex; justify-content: center; }
-  #app { width: 100%; max-width: 600px; min-height: 100vh; min-height: -webkit-fill-available; display: flex; flex-direction: column; position: relative; background: var(--navy); }
-
-  /* LOADING */
+  html { height: 100%; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { background: var(--navy); color: var(--text-primary); font-family: var(--font-body); font-size: clamp(13px, 3.5vw, 16px); min-height: 100vh; min-height: -webkit-fill-available; display: flex; justify-content: center; overflow-x: hidden; }
+  #app { width: 100%; max-width: 100%; min-height: 100vh; min-height: -webkit-fill-available; display: flex; flex-direction: column; position: relative; background: var(--navy); overflow-x: hidden; }
   #loading { position: fixed; inset: 0; background: var(--navy); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; }
   .load-logo { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--text-primary); letter-spacing: 2px; margin-bottom: 6px; }
   .load-sub { font-size: 12px; color: var(--text-secondary); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 40px; }
   .load-bar { width: 180px; height: 3px; background: var(--navy-border); border-radius: 2px; overflow: hidden; }
   .load-progress { height: 100%; background: var(--blue-bright); width: 0%; transition: width 0.4s ease; border-radius: 2px; }
   .load-status { margin-top: 14px; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
-
-  /* SCREENS */
   .screen { display: none; flex-direction: column; flex: 1; }
   .screen.active { display: flex; }
-
-  /* TOP BAR */
   .topbar { background: var(--navy-mid); padding: 14px 16px; padding-top: max(14px, env(safe-area-inset-top)); display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--navy-border); min-height: 54px; position: sticky; top: 0; z-index: 10; }
-  .topbar-brand { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--text-primary); letter-spacing: 1px; flex: 1; text-align: center; cursor: pointer; user-select: none; }
+  .topbar-brand { font-family: var(--font-display); font-size: clamp(15px, 4vw, 18px); font-weight: 600; color: var(--text-primary); letter-spacing: 1px; flex: 1; text-align: center; }
+  .topbar-back { color: var(--blue-bright); font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; min-width: 60px; }
   .topbar-icon { color: var(--text-secondary); font-size: 20px; cursor: pointer; width: 28px; text-align: center; }
-  .btn-red-back { background: var(--red-bright); color: #fff; border: none; padding: 8px 14px; border-radius: 8px; font-family: var(--font-display); font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; min-height: 38px; white-space: nowrap; }
-  .btn-red-back:active { background: var(--red); }
-
-  /* BOTTOM NAV */
+  .home-btn { background: var(--red-bright); color: #fff; font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap; min-height: 36px; min-width: 70px; }
+  .home-btn:active { background: var(--red); }
   .bottomnav { background: var(--navy-mid); display: flex; border-top: 1px solid var(--navy-border); position: sticky; bottom: 0; z-index: 10; padding-bottom: env(safe-area-inset-bottom); }
-  .nav-btn { flex: 1; padding: 10px 2px 10px; color: var(--text-muted); font-size: 10px; font-family: var(--font-display); letter-spacing: 0.5px; text-align: center; cursor: pointer; border: none; background: none; border-top: 3px solid transparent; text-transform: uppercase; transition: color 0.15s, border-color 0.15s; min-height: 56px; }
+  .nav-btn { flex: 1; padding: 10px 2px 10px; color: var(--text-muted); font-size: clamp(8px, 2.2vw, 11px); font-family: var(--font-display); letter-spacing: 0.5px; text-align: center; cursor: pointer; border: none; background: none; border-top: 3px solid transparent; text-transform: uppercase; transition: color 0.15s, border-color 0.15s; min-height: 56px; }
   .nav-btn .nav-icon { font-size: 20px; display: block; margin-bottom: 3px; }
   .nav-btn.active { color: var(--text-primary); border-top: 3px solid var(--orange); }
-
-  /* SCROLL */
   .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-
-  /* DASHBOARD */
   .dash-header { background: var(--navy-light); padding: 16px; text-align: center; border-bottom: 1px solid var(--navy-border); }
-  .dash-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: 1px; }
+  .dash-title { font-family: var(--font-display); font-size: clamp(18px, 5vw, 24px); font-weight: 600; color: var(--text-primary); letter-spacing: 1px; }
   .dash-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
   .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--navy-border); border-bottom: 1px solid var(--navy-border); }
   .kpi-cell { background: var(--navy-mid); padding: 14px 16px; text-align: center; }
-  .kpi-label { color: var(--text-secondary); font-size: 11px; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .kpi-value { color: var(--text-primary); font-family: var(--font-display); font-size: 30px; font-weight: 600; }
-  .notice-box { margin: 14px; padding: 14px 16px; background: var(--navy-light); border-radius: 10px; border-left: 4px solid var(--orange); }
+  .kpi-label { color: var(--text-secondary); font-size: clamp(9px, 2.5vw, 12px); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-value { color: var(--text-primary); font-family: var(--font-display); font-size: clamp(22px, 7vw, 32px); font-weight: 600; }
+  .notice-box { margin: 14px; padding: 14px 16px; background: var(--navy-light); border-radius: 10px; border-left: 4px solid var(--orange); min-height: 120px; }
   .notice-label { color: var(--orange); font-size: 10px; font-weight: 500; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
   .notice-text { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
   .dash-btn { display: block; width: calc(100% - 28px); margin: 0 14px 12px; padding: 16px; border-radius: 10px; border: none; font-family: var(--font-display); font-size: 17px; font-weight: 600; letter-spacing: 1px; cursor: pointer; text-align: center; transition: filter 0.15s, transform 0.1s; min-height: 52px; }
@@ -85,8 +74,6 @@
   .dash-links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 14px 20px; }
   .dash-link-btn { background: var(--navy-light); color: var(--text-secondary); font-size: 15px; font-family: var(--font-display); padding: 18px 10px; border-radius: 10px; text-align: center; cursor: pointer; border: 1px solid var(--navy-border); letter-spacing: 0.5px; transition: background 0.15s; min-height: 56px; }
   .dash-link-btn:active { background: var(--navy-border); color: var(--text-primary); }
-
-  /* WORK ORDERS */
   .search-bar { padding: 10px 12px; background: var(--navy-mid); display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--navy-border); position: sticky; top: 54px; z-index: 9; }
   .search-input { flex: 1; background: var(--navy); border: 1px solid var(--navy-border); color: var(--text-primary); font-size: 15px; padding: 10px 12px; border-radius: 8px; font-family: var(--font-body); min-height: 44px; }
   .search-input::placeholder { color: var(--text-muted); }
@@ -105,36 +92,36 @@
   .wo-row:active { background: var(--navy-border); }
   .wo-arrow { color: var(--text-secondary); font-size: 12px; width: 14px; flex-shrink: 0; transition: transform 0.2s; display: inline-block; }
   .wo-arrow.open { transform: rotate(90deg); }
-  .wo-name { color: var(--text-primary); font-size: 13px; flex: 1; font-family: var(--font-display); letter-spacing: 0.3px; line-height: 1.3; }
+  .wo-name { color: var(--text-primary); font-size: clamp(11px, 3vw, 14px); flex: 1; font-family: var(--font-display); letter-spacing: 0.3px; line-height: 1.3; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
   .wo-count { color: var(--text-muted); font-size: 11px; white-space: nowrap; }
+  .wo-update-bar { background: var(--navy-mid); padding: 10px 14px 10px 38px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--navy-border); gap: 10px; }
+  .wo-update-bar-label { color: var(--text-muted); font-size: 11px; font-family: var(--font-display); letter-spacing: 0.5px; }
+  .wo-update-all-btn { background: var(--blue-accent); color: #fff; font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap; min-height: 36px; }
+  .wo-update-all-btn:active { background: var(--blue-bright); }
   .task-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 12px 14px 12px 32px; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; align-items: center; min-height: 48px; }
   .task-row:active { filter: brightness(1.2); }
   .task-row.complete { background: var(--complete); }
   .task-row.inprogress { background: var(--inprogress); }
   .task-row.notstarted { background: var(--notstarted); }
-  .task-name { color: var(--text-primary); font-size: 12px; line-height: 1.4; }
-  .task-cell { color: var(--text-secondary); font-size: 11px; }
+  .task-name { color: var(--text-primary); font-size: clamp(10px, 2.8vw, 13px); line-height: 1.4; min-width: 0; overflow: hidden; }
+  .task-cell { color: var(--text-secondary); font-size: clamp(9px, 2.5vw, 12px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .col-header { background: var(--navy); display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 6px 14px 6px 32px; gap: 6px; border-bottom: 1px solid var(--navy-border); }
   .col-h { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
   .no-results { padding: 50px 20px; text-align: center; color: var(--text-muted); font-size: 14px; }
-
-  /* TASK DETAIL */
-  .detail-content { flex: 1; overflow-y: auto; padding: 16px; }
+  .detail-content { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px; width: 100%; }
   .detail-wo-label { font-family: var(--font-display); font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
   .detail-task-name { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text-primary); margin-bottom: 18px; line-height: 1.2; }
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--navy-border); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--navy-border); border-radius: 10px; overflow: hidden; margin-bottom: 16px; width: 100%; }
   .detail-cell { background: var(--navy-mid); padding: 12px 14px; }
   .detail-cell.full { grid-column: 1 / -1; }
   .detail-cell-label { color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-  .detail-cell-value { color: var(--text-primary); font-size: 14px; line-height: 1.3; }
+  .detail-cell-value { color: var(--text-primary); font-size: clamp(11px, 3vw, 14px); line-height: 1.3; word-break: break-word; overflow-wrap: break-word; }
   .progress-bar-wrap { margin-bottom: 16px; }
   .progress-bar-label { display: flex; justify-content: space-between; margin-bottom: 8px; }
   .progress-bar-bg { background: var(--navy-border); border-radius: 6px; height: 10px; overflow: hidden; }
   .progress-bar-fill { height: 100%; border-radius: 6px; background: var(--blue-bright); transition: width 0.3s; }
   .edit-task-btn { width: 100%; background: var(--blue-accent); color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: 1px; padding: 16px; border-radius: 10px; border: none; cursor: pointer; margin-bottom: 10px; min-height: 54px; }
   .edit-task-btn:active { background: var(--blue-bright); }
-
-  /* EDIT */
   .edit-body { flex: 1; padding: 18px; overflow-y: auto; }
   .edit-section-label { font-family: var(--font-display); font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
   .edit-task-title { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text-primary); margin-bottom: 22px; line-height: 1.3; }
@@ -151,8 +138,6 @@
   .save-btn { width: 100%; background: var(--green-bright); color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: 1px; padding: 16px; border-radius: 10px; border: none; cursor: pointer; min-height: 54px; }
   .save-btn:disabled { background: var(--navy-border); color: var(--text-muted); }
   .save-btn.saving { background: var(--blue-accent); }
-
-  /* DOCUMENTS */
   .doc-section-label { background: var(--navy); color: var(--text-muted); font-size: 10px; padding: 10px 16px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--navy-border); }
   .doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--navy-border); }
   .doc-btn { padding: 20px 14px; text-align: center; color: #fff; font-size: 14px; font-family: var(--font-display); font-weight: 500; letter-spacing: 0.5px; cursor: pointer; border: none; line-height: 1.4; min-height: 64px; display: flex; align-items: center; justify-content: center; }
@@ -161,8 +146,6 @@
   .doc-btn.red-full { background: var(--red-bright); grid-column: 1 / -1; font-size: 16px; padding: 22px; min-height: 68px; }
   .doc-btn.green { background: #1a6a28; grid-column: 1 / -1; font-size: 16px; padding: 20px; min-height: 64px; }
   .doc-btn.dark { background: var(--navy-mid); color: var(--text-secondary); }
-
-  /* AREA PROGRESS */
   .area-nav { background: var(--navy-mid); padding: 12px 16px; border-bottom: 1px solid var(--navy-border); }
   .area-nav-label { color: var(--text-muted); font-size: 10px; text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
   .area-nav-row { display: flex; align-items: center; gap: 12px; }
@@ -178,74 +161,62 @@
   .kpi-wide-value { color: var(--text-primary); font-family: var(--font-display); font-size: 18px; font-weight: 600; }
   .chart-placeholder { margin: 0 14px 20px; background: var(--navy-mid); border-radius: 10px; border: 1px solid var(--navy-border); padding: 22px; text-align: center; cursor: pointer; min-height: 60px; }
   .chart-placeholder-label { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px; }
-
-  /* EMERGENCY */
   .emerg-body { flex: 1; padding: 24px 18px; display: flex; flex-direction: column; gap: 14px; }
   .emerg-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-primary); text-align: center; letter-spacing: 1px; padding-bottom: 10px; border-bottom: 1px solid var(--navy-border); }
   .emerg-call-btn { background: var(--red-bright); color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; padding: 24px; border-radius: 12px; border: none; cursor: pointer; text-align: center; animation: pulse 2s infinite; min-height: 72px; }
   @keyframes pulse { 0%, 100% { background: var(--red-bright); } 50% { background: #ff3333; } }
   .emerg-item-btn { background: #6a1010; color: #fff; font-family: var(--font-display); font-size: 17px; font-weight: 500; letter-spacing: 0.5px; padding: 20px; border-radius: 10px; border: none; cursor: pointer; text-align: center; min-height: 62px; }
   .emerg-item-btn:active { background: #8a1818; }
-
-  /* TOAST */
+  .admin-pin-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; gap: 16px; }
+  .admin-pin-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: 1px; }
+  .admin-pin-sub { font-size: 13px; color: var(--text-muted); }
+  .admin-pin-dots { display: flex; gap: 14px; margin: 10px 0; }
+  .admin-pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--navy-border); transition: background 0.15s; }
+  .admin-pin-dot.filled { background: var(--blue-bright); }
+  .admin-pin-pad { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; max-width: 280px; }
+  .admin-pin-key { background: var(--navy-light); border: 1px solid var(--navy-border); color: var(--text-primary); font-family: var(--font-display); font-size: 24px; font-weight: 600; padding: 18px; border-radius: 10px; cursor: pointer; text-align: center; border: none; min-height: 62px; }
+  .admin-pin-key:active { background: var(--navy-border); }
+  .admin-pin-key.del { font-size: 18px; color: var(--text-muted); }
+  .admin-pin-error { color: var(--red-bright); font-size: 13px; min-height: 18px; }
+  .admin-section-title { font-family: var(--font-display); font-size: 13px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin: 18px 0 10px; }
+  .admin-doc-row { background: var(--navy-mid); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--navy-border); }
+  .admin-doc-row.hidden-row { opacity: 0.5; }
+  .admin-doc-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .admin-doc-key { font-family: var(--font-display); font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+  .admin-doc-style { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-family: var(--font-display); font-weight: 600; letter-spacing: 0.5px; }
+  .admin-doc-style.red, .admin-doc-style.red-full { background: var(--red-bright); color: #fff; }
+  .admin-doc-style.green { background: #1a6a28; color: #fff; }
+  .admin-doc-style.dark { background: var(--navy-border); color: var(--text-secondary); }
+  .admin-toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+  .admin-toggle input { opacity: 0; width: 0; height: 0; }
+  .admin-toggle-slider { position: absolute; inset: 0; background: var(--navy-border); border-radius: 24px; cursor: pointer; transition: background 0.2s; }
+  .admin-toggle-slider:before { content: ''; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
+  .admin-toggle input:checked + .admin-toggle-slider { background: var(--green-bright); }
+  .admin-toggle input:checked + .admin-toggle-slider:before { transform: translateX(20px); }
+  .admin-input { width: 100%; background: var(--navy); border: 1px solid var(--navy-border); color: var(--text-primary); font-size: 14px; padding: 10px 12px; border-radius: 8px; font-family: var(--font-body); min-height: 40px; }
+  .admin-input-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .admin-save-btn { width: 100%; background: var(--green-bright); color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: 1px; padding: 16px; border-radius: 10px; border: none; cursor: pointer; min-height: 54px; margin-top: 10px; }
+  .admin-save-btn:active { filter: brightness(1.1); }
+  .admin-save-btn:disabled { background: var(--navy-border); color: var(--text-muted); }
   #toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--green); color: #fff; font-size: 14px; font-family: var(--font-display); letter-spacing: 0.5px; padding: 12px 24px; border-radius: 24px; opacity: 0; transition: opacity 0.3s, transform 0.3s; white-space: nowrap; z-index: 999; pointer-events: none; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   #toast.error { background: var(--red); }
-
-  /* ADMIN PIN */
-  .pin-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 20px; }
-  .pin-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: 1px; margin-bottom: 8px; }
-  .pin-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
-  .pin-dots { display: flex; gap: 16px; margin-bottom: 36px; }
-  .pin-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--navy-border); transition: background 0.15s; }
-  .pin-dot.filled { background: var(--blue-bright); }
-  .pin-dot.error { background: var(--red-bright); }
-  .pin-grid { display: grid; grid-template-columns: repeat(3, 80px); gap: 14px; }
-  .pin-key { width: 80px; height: 80px; background: var(--navy-light); border: 1px solid var(--navy-border); color: var(--text-primary); font-family: var(--font-display); font-size: 28px; font-weight: 600; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.1s; }
-  .pin-key:active { background: var(--navy-border); }
-  .pin-key.del { font-size: 20px; color: var(--text-secondary); }
-
-  /* ADMIN PANEL */
-  .admin-body { flex: 1; overflow-y: auto; padding: 16px; }
-  .admin-section-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-  .admin-doc-card { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-  .admin-doc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .admin-doc-key { font-size: 11px; color: var(--text-muted); flex: 1; }
-  .admin-style-badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; color: #fff; }
-  .admin-style-badge.red { background: #8c1820; }
-  .admin-style-badge.red-full { background: var(--red-bright); }
-  .admin-style-badge.green { background: #1a6a28; }
-  .admin-style-badge.dark { background: var(--navy-border); }
-  .admin-toggle { position: relative; width: 44px; height: 26px; flex-shrink: 0; }
-  .admin-toggle input { opacity: 0; width: 0; height: 0; }
-  .admin-toggle-slider { position: absolute; inset: 0; background: var(--navy-border); border-radius: 13px; cursor: pointer; transition: background 0.2s; }
-  .admin-toggle-slider:before { content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.2s; }
-  .admin-toggle input:checked + .admin-toggle-slider { background: var(--green-bright); }
-  .admin-toggle input:checked + .admin-toggle-slider:before { transform: translateX(18px); }
-  .admin-field-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; margin-top: 10px; }
-  .admin-input { width: 100%; background: var(--navy); border: 1px solid var(--navy-border); color: var(--text-primary); font-size: 14px; padding: 10px 12px; border-radius: 8px; font-family: var(--font-body); }
-  .admin-input:focus { outline: none; border-color: var(--blue-bright); }
-  .admin-hint { font-size: 11px; color: var(--text-muted); font-style: italic; margin-top: 4px; }
-  .admin-save-btn { width: 100%; background: var(--green-bright); color: #fff; font-family: var(--font-display); font-size: 17px; font-weight: 600; letter-spacing: 1px; padding: 16px; border-radius: 10px; border: none; cursor: pointer; margin-top: 8px; min-height: 52px; }
-  .admin-save-btn:active { background: var(--green); }
-  .admin-save-btn:disabled { background: var(--navy-border); color: var(--text-muted); }
-
-  /* DESKTOP */
-  @media (min-width: 600px) {
+  @media (min-width: 700px) {
     body { background: #060e1a; }
-    #app { box-shadow: 0 0 60px rgba(0,0,0,0.6); margin: 0 auto; }
+    #app { max-width: 600px; box-shadow: 0 0 60px rgba(0,0,0,0.6); margin: 0 auto; }
     .topbar { min-height: 58px; }
     .nav-btn { font-size: 11px; }
     .wo-name { font-size: 14px; }
     .task-name { font-size: 13px; }
     .task-cell { font-size: 12px; }
+    .kpi-value { font-size: 30px; }
+    .kpi-label { font-size: 11px; }
   }
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- LOADING -->
   <div id="loading">
     <div class="load-logo">PalmCrest</div>
     <div class="load-sub">LiveTrack</div>
@@ -253,50 +224,34 @@
     <div class="load-status" id="loadStatus">Loading data...</div>
   </div>
 
-  <!-- DASHBOARD -->
   <div id="screen-dashboard" class="screen">
-    <div class="topbar">
-      <span class="topbar-icon"></span>
-      <span class="topbar-brand" onclick="handleBrandClick()">PalmCrest LiveTrack</span>
-      <span class="topbar-icon"></span>
-    </div>
+    <div class="topbar"><span class="topbar-icon"></span><span class="topbar-brand" onclick="adminTap()">PalmCrest LiveTrack</span><span class="topbar-icon"></span></div>
     <div class="scroll-area">
-      <div class="dash-header">
-        <div class="dash-title" id="dashTitle">Shutdown Schedule</div>
-        <div class="dash-subtitle" id="dashSubtitle"></div>
-      </div>
+      <div class="dash-header"><div class="dash-title" id="dashTitle">Shutdown Schedule</div><div class="dash-subtitle" id="dashSubtitle"></div></div>
       <div class="kpi-grid">
         <div class="kpi-cell"><div class="kpi-label">Shut Work Target</div><div class="kpi-value" id="kpiTarget">—</div></div>
         <div class="kpi-cell"><div class="kpi-label">Actual Work</div><div class="kpi-value" id="kpiActual">—</div></div>
         <div class="kpi-cell"><div class="kpi-label">Duration</div><div class="kpi-value" id="kpiDuration">—</div></div>
         <div class="kpi-cell"><div class="kpi-label">Finish Variance</div><div class="kpi-value" id="kpiVariance">—</div></div>
       </div>
-      <div class="notice-box">
-        <div class="notice-label">General Notice</div>
-        <div class="notice-text" id="dashNotice">Loading...</div>
-      </div>
+      <div class="notice-box"><div class="notice-label">General Notice</div><div class="notice-text" id="dashNotice">Loading...</div></div>
       <button class="dash-btn emergency" onclick="showScreen('emergency')">⚠ Emergency Info &amp; Contacts</button>
       <button class="dash-btn worklist" onclick="showScreen('workorders'); setNav('workorders')">Work Lists</button>
       <div class="dash-links">
         <div class="dash-link-btn" onclick="showScreen('documents'); setNav('documents')">Documents</div>
-        <div class="dash-link-btn" onclick="showScreen('areaprogress'); setNav('areaprogress'); renderAreaProgress();">Area Progress</div>
+        <div class="dash-link-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')">Area Progress</div>
       </div>
     </div>
     <div class="bottomnav">
       <button class="nav-btn active" id="nav-dashboard" onclick="showScreen('dashboard'); setNav('dashboard')"><span class="nav-icon">⊞</span>Dashboard</button>
       <button class="nav-btn" id="nav-workorders" onclick="showScreen('workorders'); setNav('workorders')"><span class="nav-icon">☑</span>Work Orders</button>
       <button class="nav-btn" id="nav-documents" onclick="showScreen('documents'); setNav('documents')"><span class="nav-icon">📄</span>Documents</button>
-      <button class="nav-btn" id="nav-areaprogress" onclick="showScreen('areaprogress'); setNav('areaprogress'); renderAreaProgress();"><span class="nav-icon">📊</span>Area</button>
+      <button class="nav-btn" id="nav-areaprogress" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
 
-  <!-- WORK ORDERS -->
   <div id="screen-workorders" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button>
-      <span class="topbar-brand">Work Orders</span>
-      <span style="width:70px"></span>
-    </div>
+    <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Work Orders</span><span style="width:70px"></span></div>
     <div class="search-bar">
       <input class="search-input" placeholder="Search tasks, WO, FLOC..." id="searchInput" oninput="applyFilters()" />
       <button class="filter-btn" id="filterToggleBtn" onclick="toggleFilterPanel()">Filter</button>
@@ -320,43 +275,29 @@
       <div class="legend-item"><div class="legend-dot" style="background:var(--inprogress)"></div>In Progress</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--notstarted)"></div>Not Started</div>
     </div>
-    <div class="col-header">
-      <span class="col-h">Task Name</span><span class="col-h">WO#</span><span class="col-h">Task#</span><span class="col-h">Progress</span>
-    </div>
+    <div class="col-header"><span class="col-h">Task Name</span><span class="col-h">WO#</span><span class="col-h">Task#</span><span class="col-h">Progress</span></div>
     <div class="scroll-area" id="woList"><div class="no-results">Loading work orders...</div></div>
     <div class="bottomnav">
       <button class="nav-btn" onclick="showScreen('dashboard'); setNav('dashboard')"><span class="nav-icon">⊞</span>Dashboard</button>
       <button class="nav-btn active"><span class="nav-icon">☑</span>Work Orders</button>
       <button class="nav-btn" onclick="showScreen('documents'); setNav('documents')"><span class="nav-icon">📄</span>Documents</button>
-      <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress'); renderAreaProgress();"><span class="nav-icon">📊</span>Area</button>
+      <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
 
-  <!-- TASK DETAIL -->
   <div id="screen-taskdetail" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('workorders')">◀ Back</button>
-      <span class="topbar-brand">Task Detail</span>
-      <span style="width:70px"></span>
-    </div>
-    <div class="scroll-area">
-      <div class="detail-content" id="taskDetailContent"></div>
-    </div>
+    <div class="topbar"><span class="topbar-back" onclick="showScreen('workorders')">◀ Work Orders</span><span style="flex:1"></span></div>
+    <div class="detail-content" id="taskDetailContent"></div>
     <div class="bottomnav">
       <button class="nav-btn" onclick="showScreen('dashboard'); setNav('dashboard')"><span class="nav-icon">⊞</span>Dashboard</button>
       <button class="nav-btn active" onclick="showScreen('workorders')"><span class="nav-icon">☑</span>Work Orders</button>
       <button class="nav-btn" onclick="showScreen('documents'); setNav('documents')"><span class="nav-icon">📄</span>Documents</button>
-      <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress'); renderAreaProgress();"><span class="nav-icon">📊</span>Area</button>
+      <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
 
-  <!-- EDIT PROGRESS -->
   <div id="screen-editprogress" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('taskdetail')">◀ Back</button>
-      <span class="topbar-brand">Update Progress</span>
-      <span style="width:70px"></span>
-    </div>
+    <div class="topbar"><span class="topbar-back" onclick="showScreen('taskdetail')">◀ Back</span><span class="topbar-brand">Update Progress</span><span style="width:24px"></span></div>
     <div class="edit-body">
       <div class="edit-section-label">Task</div>
       <div class="edit-task-title" id="editTaskTitle"></div>
@@ -369,17 +310,12 @@
       <input type="range" class="prog-slider" id="progressSlider" min="0" max="100" step="5" value="0" oninput="syncSlider()" />
       <div class="notes-label">Notes</div>
       <textarea class="notes-input" id="notesInput" placeholder="Enter any notes..."></textarea>
-      <button class="save-btn" id="saveBtn" onclick="saveProgress()">Save → Update Google Sheet</button>
+      <button class="save-btn" id="saveBtn" onclick="saveProgress()">Save → Update Scheduler</button>
     </div>
   </div>
 
-  <!-- DOCUMENTS -->
   <div id="screen-documents" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button>
-      <span class="topbar-brand">Documents</span>
-      <span style="width:70px"></span>
-    </div>
+    <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Documents</span><span style="width:70px"></span></div>
     <div class="scroll-area">
       <div class="doc-section-label">General Docs</div>
       <div class="doc-grid" id="docGrid"></div>
@@ -388,17 +324,12 @@
       <button class="nav-btn" onclick="showScreen('dashboard'); setNav('dashboard')"><span class="nav-icon">⊞</span>Dashboard</button>
       <button class="nav-btn" onclick="showScreen('workorders'); setNav('workorders')"><span class="nav-icon">☑</span>Work Orders</button>
       <button class="nav-btn active"><span class="nav-icon">📄</span>Documents</button>
-      <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress'); renderAreaProgress();"><span class="nav-icon">📊</span>Area</button>
+      <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
 
-  <!-- AREA PROGRESS -->
   <div id="screen-areaprogress" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button>
-      <span class="topbar-brand">Area Progress</span>
-      <span style="width:70px"></span>
-    </div>
+    <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Area Progress</span><span style="width:70px"></span></div>
     <div class="scroll-area">
       <div class="area-nav">
         <div class="area-nav-label">Choose Area</div>
@@ -429,13 +360,8 @@
     </div>
   </div>
 
-  <!-- EMERGENCY -->
   <div id="screen-emergency" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('dashboard')">◀ Back</button>
-      <span class="topbar-brand">Emergency</span>
-      <span style="width:70px"></span>
-    </div>
+    <div class="topbar"><span class="topbar-back" onclick="showScreen('dashboard')">◀ Back</span><span class="topbar-brand">Emergency</span><span style="width:24px"></span></div>
     <div class="emerg-body">
       <div class="emerg-title">Emergency Info</div>
       <button class="emerg-call-btn">⚠ EMERGENCY CALL ⚠</button>
@@ -444,49 +370,34 @@
     </div>
   </div>
 
-  <!-- ADMIN PIN -->
-  <div id="screen-adminpin" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('dashboard')">◀ Back</button>
-      <span class="topbar-brand">Admin</span>
-      <span style="width:70px"></span>
-    </div>
-    <div class="pin-screen">
-      <div class="pin-title">Admin Access</div>
-      <div class="pin-subtitle">Enter PIN to continue</div>
-      <div class="pin-dots">
-        <div class="pin-dot" id="pd0"></div>
-        <div class="pin-dot" id="pd1"></div>
-        <div class="pin-dot" id="pd2"></div>
-        <div class="pin-dot" id="pd3"></div>
+  <div id="screen-admin" class="screen">
+    <div class="topbar"><span class="topbar-back" onclick="showScreen('dashboard')">◀ Back</span><span class="topbar-brand">Admin</span><span style="width:60px"></span></div>
+    <div id="adminPinWrap" class="admin-pin-wrap">
+      <div class="admin-pin-title">Admin Access</div>
+      <div class="admin-pin-sub">Enter PIN to continue</div>
+      <div class="admin-pin-dots">
+        <div class="admin-pin-dot" id="pd0"></div><div class="admin-pin-dot" id="pd1"></div>
+        <div class="admin-pin-dot" id="pd2"></div><div class="admin-pin-dot" id="pd3"></div>
       </div>
-      <div class="pin-grid">
-        <button class="pin-key" onclick="pinPress('1')">1</button>
-        <button class="pin-key" onclick="pinPress('2')">2</button>
-        <button class="pin-key" onclick="pinPress('3')">3</button>
-        <button class="pin-key" onclick="pinPress('4')">4</button>
-        <button class="pin-key" onclick="pinPress('5')">5</button>
-        <button class="pin-key" onclick="pinPress('6')">6</button>
-        <button class="pin-key" onclick="pinPress('7')">7</button>
-        <button class="pin-key" onclick="pinPress('8')">8</button>
-        <button class="pin-key" onclick="pinPress('9')">9</button>
-        <button class="pin-key" onclick="pinPress('0')">0</button>
-        <button class="pin-key del" onclick="pinDelete()">⌫</button>
+      <div class="admin-pin-error" id="pinError"></div>
+      <div class="admin-pin-pad">
+        <button class="admin-pin-key" onclick="pinKey('1')">1</button>
+        <button class="admin-pin-key" onclick="pinKey('2')">2</button>
+        <button class="admin-pin-key" onclick="pinKey('3')">3</button>
+        <button class="admin-pin-key" onclick="pinKey('4')">4</button>
+        <button class="admin-pin-key" onclick="pinKey('5')">5</button>
+        <button class="admin-pin-key" onclick="pinKey('6')">6</button>
+        <button class="admin-pin-key" onclick="pinKey('7')">7</button>
+        <button class="admin-pin-key" onclick="pinKey('8')">8</button>
+        <button class="admin-pin-key" onclick="pinKey('9')">9</button>
+        <button class="admin-pin-key" onclick="pinKey('0')">0</button>
+        <button class="admin-pin-key del" onclick="pinDel()">⌫</button>
       </div>
     </div>
-  </div>
-
-  <!-- ADMIN PANEL -->
-  <div id="screen-adminpanel" class="screen">
-    <div class="topbar">
-      <button class="btn-red-back" onclick="showScreen('dashboard')">◀ Back</button>
-      <span class="topbar-brand">Admin</span>
-      <span style="width:70px"></span>
-    </div>
-    <div class="admin-body">
-      <div class="admin-section-label">Document Buttons</div>
+    <div id="adminContent" style="display:none; flex:1; overflow-y:auto; padding:16px;">
+      <div class="admin-section-title">Document Buttons</div>
       <div id="adminDocList"></div>
-      <button class="admin-save-btn" id="adminSaveBtn" onclick="saveAdminDocs()">Save &amp; Apply Changes</button>
+      <button class="admin-save-btn" id="adminSaveBtn" onclick="saveAdminConfig()">Save Changes</button>
     </div>
   </div>
 
@@ -494,7 +405,6 @@
 </div>
 
 <script>
-// ── GAS BACKEND URL ──
 const EXEC_URL = 'https://script.google.com/macros/s/AKfycbwVEauHZ0YbwYaIl976cYLKM3QeN3iPcq6G1-LOhJA63ILc3m99ZAqJBsb6nTwd_3Wj4Q/exec';
 
 const DOCS = [
@@ -522,9 +432,7 @@ function renderDocGrid() {
   let html = '';
   DOCS.forEach(function(doc) {
     if (doc.hidden) return;
-    const onclick = doc.action === 'emergency'
-      ? "showScreen('emergency')"
-      : "openDoc('" + doc.key + "')";
+    const onclick = doc.action === 'emergency' ? "showScreen('emergency')" : "openDoc('" + doc.key + "')";
     html += '<button class="doc-btn ' + doc.style + '" onclick="' + onclick + '">' + doc.label + '</button>';
   });
   grid.innerHTML = html;
@@ -541,14 +449,9 @@ function openDoc(key) {
   }
 }
 
-let allTasks = [];
-let summaryData = [];
-let currentArea = 0;
-let selectedTask = null;
-let currentProgress = 0;
-let expandedWOs = new Set();
+let allTasks = [], summaryData = [], currentArea = 0, selectedTask = null, currentProgress = 0;
+let expandedWOs = new Set(), editMode = 'task', selectedWONumber = null;
 
-// ── LOAD DATA via fetch from GAS ──
 function loadData() {
   setLoad(20, 'Connecting...');
   fetch(EXEC_URL + '?action=data', { redirect: 'follow' })
@@ -558,38 +461,33 @@ function loadData() {
       applyNotes(data.notes);
       applySummary(data.summary);
       applyWOs(data.wos);
+      if (Array.isArray(data.config) && data.config.length > 0) {
+        DOCS.length = 0;
+        data.config.forEach(function(d) { DOCS.push(d); });
+      }
       renderDocGrid();
       setLoad(100, 'Ready');
-      setTimeout(function() {
-        document.getElementById('loading').style.display = 'none';
-        showScreen('dashboard');
-      }, 300);
+      setTimeout(function() { document.getElementById('loading').style.display = 'none'; showScreen('dashboard'); }, 300);
     })
     .catch(function(e) {
       document.getElementById('loading').innerHTML =
-        '<div style="color:#ff6060;padding:30px;text-align:center;font-size:14px;line-height:1.8">' +
-        'Could not load data.<br><small style="color:#888">' + e.message + '</small><br><br>' +
+        '<div style="color:#ff6060;padding:30px;text-align:center;font-size:14px;line-height:1.8">Could not load data.<br><small style="color:#888">' + e.message + '</small><br><br>' +
         '<button onclick="location.reload()" style="background:#1a6eb5;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:14px;cursor:pointer;">Retry</button></div>';
     });
 }
 
-function setLoad(pct, msg) {
-  document.getElementById('loadBar').style.width = pct + '%';
-  document.getElementById('loadStatus').textContent = msg;
-}
+function setLoad(pct, msg) { document.getElementById('loadBar').style.width = pct + '%'; document.getElementById('loadStatus').textContent = msg; }
 
-function applyNotes(data) {
-  document.getElementById('dashNotice').textContent = (data && data.note) ? data.note : 'No notices at this time.';
-}
+function applyNotes(data) { document.getElementById('dashNotice').textContent = (data && data.note) ? data.note : 'No notices at this time.'; }
 
 function applySummary(data) {
   summaryData = Array.isArray(data) ? data : [];
   if (summaryData.length > 0) {
     const first = summaryData[0];
-    document.getElementById('kpiTarget').textContent = fmt(first.pctComplete);
-    document.getElementById('kpiActual').textContent = fmt(first.pctWorkComplete);
-    document.getElementById('kpiDuration').textContent = fmt(first.duration);
-    document.getElementById('kpiVariance').textContent = fmt(first.finishVariance);
+    document.getElementById('kpiTarget').textContent = (first.shutTarget !== undefined && first.shutTarget !== '') ? fmt(Math.round(first.shutTarget * 100)) + '%' : '—';
+    document.getElementById('kpiActual').textContent = (first.actualWorkPct !== undefined && first.actualWorkPct !== '') ? fmt(Math.round(first.actualWorkPct * 100)) + '%' : '—';
+    document.getElementById('kpiDuration').textContent = fmt(first.kpiDuration);
+    document.getElementById('kpiVariance').textContent = fmt(first.kpiVariance);
     document.getElementById('dashSubtitle').textContent = first.area || '';
     renderAreaProgress();
   }
@@ -603,30 +501,19 @@ function fmt(val) {
 
 function applyWOs(data) {
   allTasks = (Array.isArray(data) ? data : []).map(function(r) {
-    return {
-      row: r[0], name: r[1], woNumber: r[2], taskNumber: r[3],
-      duration: r[4], pctComplete: r[5], start: r[6], finish: r[7],
-      team: r[8], floc: r[9], resource: r[10], pctProgress: r[11],
-      woHeader: r[12], subTeam: r[13], group: r[14], notes: r[15],
-      woStatus: r[16]
-    };
+    return { row: r[0], name: r[1], woNumber: r[2], taskNumber: r[3], duration: r[4], pctComplete: r[5], start: r[6], finish: r[7], team: r[8], floc: r[9], resource: r[10], pctProgress: r[11], woHeader: r[12], subTeam: r[13], group: r[14], notes: r[15], woStatus: r[16] };
   });
   populateFilterOptions();
   renderWOList();
 }
 
-function populateFilterOptions() {
-  fillSelect('filterTeam', 'team', allTasks, 'All Teams');
-  updateCascadingFilters();
-}
+function populateFilterOptions() { fillSelect('filterTeam', 'team', allTasks, 'All Teams'); updateCascadingFilters(); }
 
 function fillSelect(id, key, tasks, label) {
   const sel = document.getElementById(id);
   const current = sel.value;
   const vals = [...new Set(tasks.map(function(t) { return t[key]; }).filter(Boolean))].sort();
-  sel.innerHTML = '<option value="">' + label + '</option>' + vals.map(function(v) {
-    return '<option value="' + v + '"' + (v === current ? ' selected' : '') + '>' + v + '</option>';
-  }).join('');
+  sel.innerHTML = '<option value="">' + label + '</option>' + vals.map(function(v) { return '<option value="' + v + '"' + (v === current ? ' selected' : '') + '>' + v + '</option>'; }).join('');
 }
 
 function updateCascadingFilters() {
@@ -642,31 +529,20 @@ function updateCascadingFilters() {
   fillSelect('filterStatus', 'woStatus', afterGroup, 'All Statuses');
 }
 
-function toggleFilterPanel() {
-  document.getElementById('filterPanel').classList.toggle('open');
-  document.getElementById('filterToggleBtn').classList.toggle('active');
-}
+function toggleFilterPanel() { document.getElementById('filterPanel').classList.toggle('open'); document.getElementById('filterToggleBtn').classList.toggle('active'); }
 
 function clearFilters() {
-  ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].forEach(function(id) {
-    document.getElementById(id).value = '';
-  });
+  ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].forEach(function(id) { document.getElementById(id).value = ''; });
   document.getElementById('searchInput').value = '';
-  updateCascadingFilters();
-  applyFilters();
+  updateCascadingFilters(); applyFilters();
 }
 
-function applyFilters() {
-  updateCascadingFilters();
-  renderWOList();
-  updateFilterBadge();
-}
+function applyFilters() { updateCascadingFilters(); renderWOList(); updateFilterBadge(); }
 
 function updateFilterBadge() {
   const active = ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].filter(function(id) { return document.getElementById(id).value; }).length;
   const keyword = document.getElementById('searchInput').value;
-  const total = active + (keyword ? 1 : 0);
-  document.getElementById('filterToggleBtn').textContent = total > 0 ? 'Filter (' + total + ')' : 'Filter';
+  document.getElementById('filterToggleBtn').textContent = (active + (keyword ? 1 : 0)) > 0 ? 'Filter (' + (active + (keyword ? 1 : 0)) + ')' : 'Filter';
 }
 
 function getFilteredTasks() {
@@ -682,10 +558,7 @@ function getFilteredTasks() {
     if (group && t.group !== group) return false;
     if (resource && t.resource !== resource) return false;
     if (status && t.woStatus !== status) return false;
-    if (keyword) {
-      const s = [t.name, t.woNumber, t.floc, t.woHeader, t.resource, t.team].join(' ').toLowerCase();
-      if (!s.includes(keyword)) return false;
-    }
+    if (keyword) { const s = [t.name, t.woNumber, t.floc, t.woHeader, t.resource, t.team].join(' ').toLowerCase(); if (!s.includes(keyword)) return false; }
     return true;
   });
 }
@@ -709,6 +582,8 @@ function renderWOList() {
       '<span class="wo-name">' + (group.header || woNum) + '</span>' +
       '<span class="wo-count">' + group.tasks.length + ' task' + (group.tasks.length !== 1 ? 's' : '') + '</span></div>';
     if (isOpen) {
+      html += '<div class="wo-update-bar"><span class="wo-update-bar-label">' + group.tasks.length + ' task' + (group.tasks.length !== 1 ? 's' : '') + ' in this WO</span>' +
+        '<button class="wo-update-all-btn" onclick="event.stopPropagation(); openUpdateWO(\'' + woNum + '\')">Update All Tasks</button></div>';
       group.tasks.forEach(function(task) {
         const pct = (task.pctProgress !== '' && task.pctProgress !== null) ? Number(task.pctProgress) : 0;
         const cls = pct >= 100 ? 'complete' : pct > 0 ? 'inprogress' : 'notstarted';
@@ -723,16 +598,12 @@ function renderWOList() {
   list.innerHTML = html;
 }
 
-function toggleWO(woNum) {
-  if (expandedWOs.has(woNum)) expandedWOs.delete(woNum); else expandedWOs.add(woNum);
-  renderWOList();
-}
+function toggleWO(woNum) { if (expandedWOs.has(woNum)) expandedWOs.delete(woNum); else expandedWOs.add(woNum); renderWOList(); }
 
 function selectTask(rowNum) {
   selectedTask = allTasks.find(function(t) { return t.row === rowNum; });
   if (!selectedTask) return;
-  renderTaskDetail();
-  showScreen('taskdetail');
+  renderTaskDetail(); showScreen('taskdetail');
 }
 
 function renderTaskDetail() {
@@ -756,75 +627,99 @@ function renderTaskDetail() {
     '<div class="detail-cell"><div class="detail-cell-label">WO Status</div><div class="detail-cell-value">' + (t.woStatus || '—') + '</div></div>' +
     '<div class="detail-cell"><div class="detail-cell-label">% MS Project</div><div class="detail-cell-value">' + (t.pctComplete || '0') + '%</div></div>' +
     (t.notes ? '<div class="detail-cell full"><div class="detail-cell-label">Notes</div><div class="detail-cell-value">' + t.notes + '</div></div>' : '') +
-    '</div>' +
-    '<button class="edit-task-btn" onclick="openEditScreen()">Update Progress</button>';
+    '</div><button class="edit-task-btn" onclick="openEditScreen()">Update Progress</button>';
 }
 
 function formatDate(val) {
   if (!val) return '—';
-  try { const d = new Date(val); if (isNaN(d)) return val; return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
-  catch(e) { return val; }
+  try { const d = new Date(val); if (isNaN(d)) return val; return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch(e) { return val; }
 }
 
 function openEditScreen() {
+  editMode = 'task'; selectedWONumber = null;
   const t = selectedTask;
   currentProgress = (t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0;
   document.getElementById('editTaskTitle').textContent = t.name || '';
   document.getElementById('progressDisplay').textContent = currentProgress;
   document.getElementById('progressSlider').value = currentProgress;
   document.getElementById('notesInput').value = t.notes || '';
-  document.getElementById('saveBtn').textContent = 'Save → Update Google Sheet';
+  document.getElementById('saveBtn').textContent = 'Save → Update Scheduler';
   document.getElementById('saveBtn').disabled = false;
   document.getElementById('saveBtn').classList.remove('saving');
   showScreen('editprogress');
 }
 
-function changeProgress(delta) {
-  currentProgress = Math.max(0, Math.min(100, currentProgress + delta));
+function openUpdateWO(woNum) {
+  editMode = 'wo'; selectedWONumber = woNum;
+  const tasks = allTasks.filter(function(t) { return t.woNumber === woNum; });
+  if (!tasks.length) return;
+  const avgPct = Math.round(tasks.reduce(function(sum, t) { return sum + ((t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0); }, 0) / tasks.length);
+  currentProgress = avgPct;
+  document.getElementById('editTaskTitle').textContent = (tasks[0].woHeader || woNum) + ' — All ' + tasks.length + ' Tasks';
   document.getElementById('progressDisplay').textContent = currentProgress;
   document.getElementById('progressSlider').value = currentProgress;
+  document.getElementById('notesInput').value = '';
+  document.getElementById('saveBtn').textContent = 'Save → Update Scheduler';
+  document.getElementById('saveBtn').disabled = false;
+  document.getElementById('saveBtn').classList.remove('saving');
+  showScreen('editprogress');
 }
 
-function syncSlider() {
-  currentProgress = parseInt(document.getElementById('progressSlider').value);
-  document.getElementById('progressDisplay').textContent = currentProgress;
-}
+function changeProgress(delta) { currentProgress = Math.max(0, Math.min(100, currentProgress + delta)); document.getElementById('progressDisplay').textContent = currentProgress; document.getElementById('progressSlider').value = currentProgress; }
+function syncSlider() { currentProgress = parseInt(document.getElementById('progressSlider').value); document.getElementById('progressDisplay').textContent = currentProgress; }
 
 function saveProgress() {
+  if (editMode === 'wo') { saveWOProgress(); return; }
   const btn = document.getElementById('saveBtn');
-  btn.textContent = 'Saving...';
-  btn.disabled = true;
-  btn.classList.add('saving');
+  btn.textContent = 'Saving...'; btn.disabled = true; btn.classList.add('saving');
   const notes = document.getElementById('notesInput').value;
-  const url = EXEC_URL + '?action=updateTask&row=' + selectedTask.row +
-    '&pctProgress=' + encodeURIComponent(currentProgress) +
-    '&notes=' + encodeURIComponent(notes);
-  fetch(url, { redirect: 'follow' })
+  fetch(EXEC_URL + '?action=updateTask&row=' + selectedTask.row + '&pctProgress=' + encodeURIComponent(currentProgress) + '&notes=' + encodeURIComponent(notes), { redirect: 'follow' })
     .then(function() {
-      selectedTask.pctProgress = currentProgress;
-      selectedTask.notes = notes;
-      showToast('Saved — Google Sheet updated');
-      renderWOList();
-      showScreen('taskdetail');
-      renderTaskDetail();
+      selectedTask.pctProgress = currentProgress; selectedTask.notes = notes;
+      showToast('Saved — Scheduler updated'); renderWOList(); showScreen('taskdetail'); renderTaskDetail();
     })
-    .catch(function(e) {
+    .catch(function() {
       showToast('Save failed — check connection', true);
-      btn.textContent = 'Save → Update Google Sheet';
-      btn.disabled = false;
-      btn.classList.remove('saving');
+      btn.textContent = 'Save → Update Scheduler'; btn.disabled = false; btn.classList.remove('saving');
     });
 }
 
-function renderAreaProgress() {
-  if (summaryData.length === 0) return;
-  const a = summaryData[currentArea];
+function saveWOProgress() {
+  var btn = document.getElementById('saveBtn');
+  btn.textContent = 'Saving...'; btn.disabled = true; btn.classList.add('saving');
+  var notes = document.getElementById('notesInput').value;
+  var tasks = allTasks.filter(function(t) { return t.woNumber === selectedWONumber; });
+  var cbName = 'woCallback_' + Date.now();
+  window[cbName] = function(result) {
+    delete window[cbName];
+    var s = document.getElementById(cbName); if (s) s.parentNode.removeChild(s);
+    clearTimeout(window[cbName + '_timeout']);
+    if (result && result.success) {
+      tasks.forEach(function(t) { t.pctProgress = currentProgress; if (notes) t.notes = notes; });
+      showToast('All ' + (result.rowCount || tasks.length) + ' tasks updated');
+      editMode = 'task'; selectedWONumber = null; renderWOList(); showScreen('workorders');
+    } else {
+      showToast('WO save failed — try again', true);
+      btn.textContent = 'Save → Update Scheduler'; btn.disabled = false; btn.classList.remove('saving');
+    }
+  };
+  window[cbName + '_timeout'] = setTimeout(function() {
+    if (window[cbName]) { delete window[cbName]; showToast('WO save timed out — try again', true); btn.textContent = 'Save → Update Scheduler'; btn.disabled = false; btn.classList.remove('saving'); }
+  }, 30000);
+  var script = document.createElement('script');
+  script.id = cbName;
+  script.src = EXEC_URL + '?action=updateWO&woNumber=' + encodeURIComponent(selectedWONumber) + '&pctProgress=' + encodeURIComponent(currentProgress) + '&notes=' + encodeURIComponent(notes) + '&callback=' + cbName;
+  document.body.appendChild(script);
+}
+
+function renderAreaProgress(a) {
+  if (!a) { if (summaryData.length === 0) return; a = summaryData[currentArea]; }
   document.getElementById('areaName').textContent = a.area || '—';
   document.getElementById('ap-mh').textContent = fmt(a.manHours);
   document.getElementById('ap-dur').textContent = fmt(a.duration);
   document.getElementById('ap-aw').textContent = fmt(a.actualWork);
-  document.getElementById('ap-pc').textContent = fmt(a.pctComplete);
-  document.getElementById('ap-pwc').textContent = fmt(a.pctWorkComplete);
+  document.getElementById('ap-pc').textContent = (a.pctComplete !== '' && a.pctComplete !== null && a.pctComplete !== undefined) ? Math.round(a.pctComplete * 100) + '%' : '—';
+  document.getElementById('ap-pwc').textContent = (a.pctWorkComplete !== '' && a.pctWorkComplete !== null && a.pctWorkComplete !== undefined) ? Math.round(a.pctWorkComplete * 100) + '%' : '—';
   document.getElementById('ap-fv').textContent = fmt(a.finishVariance);
   document.getElementById('ap-ps').textContent = formatDate(a.plannedStart);
   document.getElementById('ap-ff').textContent = formatDate(a.forecastFinish);
@@ -834,142 +729,95 @@ function renderAreaProgress() {
 function changeArea(dir) {
   if (summaryData.length === 0) return;
   currentArea = (currentArea + dir + summaryData.length) % summaryData.length;
-  renderAreaProgress();
+  const areaName = summaryData[currentArea].area;
+  document.getElementById('areaName').textContent = areaName;
+  ['ap-mh','ap-dur','ap-aw','ap-pc','ap-pwc','ap-fv','ap-ps','ap-ff','ap-hlc'].forEach(function(id) { document.getElementById(id).textContent = '…'; });
+  fetch(EXEC_URL + '?action=setArea&area=' + encodeURIComponent(areaName), { redirect: 'follow' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) { if (data && data.success) renderAreaProgress(data.area); else { showToast('Could not load area data', true); renderAreaProgress(); } })
+    .catch(function() { showToast('Could not load area data', true); renderAreaProgress(); });
 }
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById('screen-' + id).classList.add('active');
+function showScreen(id) { document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); }); document.getElementById('screen-' + id).classList.add('active'); }
+function setNav(active) { document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); }); const btn = document.getElementById('nav-' + active); if (btn) btn.classList.add('active'); }
+function showToast(msg, isError) { const t = document.getElementById('toast'); t.textContent = msg; t.className = isError ? 'error' : ''; t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 3000); }
+
+const ADMIN_PIN = '1234';
+let pinEntry = '', adminTapCount = 0, adminTapTimer = null;
+
+function adminTap() {
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer = setTimeout(function() { adminTapCount = 0; }, 800);
+  if (adminTapCount >= 3) {
+    adminTapCount = 0; pinEntry = ''; updatePinDots();
+    document.getElementById('pinError').textContent = '';
+    document.getElementById('adminPinWrap').style.display = 'flex';
+    document.getElementById('adminContent').style.display = 'none';
+    showScreen('admin');
+  }
 }
 
-function setNav(active) {
-  document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
-  const btn = document.getElementById('nav-' + active);
-  if (btn) btn.classList.add('active');
-}
-
-function showToast(msg, isError) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = isError ? 'error' : '';
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 3000);
-}
-
-var ADMIN_PIN = '1234';
-var pinEntry = '';
-var brandClickCount = 0;
-var brandClickTimer = null;
-
-function handleBrandClick() {
-  brandClickCount++;
-  clearTimeout(brandClickTimer);
-  brandClickTimer = setTimeout(function() {
-    if (brandClickCount >= 3) {
-      pinEntry = '';
-      updatePinDots();
-      showScreen('adminpin');
-    }
-    brandClickCount = 0;
-  }, 600);
-}
-
-function pinPress(digit) {
+function pinKey(k) {
   if (pinEntry.length >= 4) return;
-  pinEntry += digit;
-  updatePinDots();
+  pinEntry += k; updatePinDots();
   if (pinEntry.length === 4) {
     setTimeout(function() {
       if (pinEntry === ADMIN_PIN) {
-        pinEntry = '';
-        updatePinDots();
-        renderAdminPanel();
-        showScreen('adminpanel');
+        document.getElementById('adminPinWrap').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        renderAdminDocs();
       } else {
-        document.querySelectorAll('.pin-dot').forEach(function(d) { d.classList.add('error'); });
-        setTimeout(function() {
-          pinEntry = '';
-          updatePinDots();
-          document.querySelectorAll('.pin-dot').forEach(function(d) { d.classList.remove('error'); });
-        }, 700);
+        document.getElementById('pinError').textContent = 'Incorrect PIN';
+        pinEntry = ''; updatePinDots();
       }
-    }, 150);
+    }, 200);
   }
 }
 
-function pinDelete() {
-  pinEntry = pinEntry.slice(0, -1);
-  updatePinDots();
-}
+function pinDel() { pinEntry = pinEntry.slice(0, -1); updatePinDots(); document.getElementById('pinError').textContent = ''; }
+function updatePinDots() { for (let i = 0; i < 4; i++) { document.getElementById('pd' + i).classList.toggle('filled', i < pinEntry.length); } }
 
-function updatePinDots() {
-  for (var i = 0; i < 4; i++) {
-    var dot = document.getElementById('pd' + i);
-    if (!dot) continue;
-    dot.classList.toggle('filled', i < pinEntry.length);
-    dot.classList.remove('error');
-  }
-}
-
-function renderAdminPanel() {
-  var list = document.getElementById('adminDocList');
-  var html = '';
+function renderAdminDocs() {
+  const list = document.getElementById('adminDocList');
+  let html = '';
   DOCS.forEach(function(doc, idx) {
-    var isAction = doc.action === 'emergency';
-    html += '<div class="admin-doc-card">' +
-      '<div class="admin-doc-header">' +
-        '<span class="admin-doc-key">' + doc.key + '</span>' +
-        '<span class="admin-style-badge ' + doc.style + '">' + doc.style + '</span>' +
-        '<label class="admin-toggle"><input type="checkbox" id="adm-vis-' + idx + '"' + (doc.hidden ? '' : ' checked') + '><span class="admin-toggle-slider"></span></label>' +
-      '</div>' +
-      '<div class="admin-field-label">Button Label</div>' +
-      '<input class="admin-input" id="adm-lbl-' + idx + '" value="' + escHtml(doc.label) + '" />';
-    if (isAction) {
-      html += '<div class="admin-hint">Links to Emergency screen — no URL needed</div>';
-    } else {
-      html += '<div class="admin-field-label">URL</div>' +
-        '<input class="admin-input" id="adm-url-' + idx + '" value="' + escHtml(doc.url) + '" placeholder="https://..." />';
-    }
-    html += '</div>';
+    const isHidden = doc.hidden || false;
+    const styleLabel = doc.style || 'dark';
+    html += '<div class="admin-doc-row' + (isHidden ? ' hidden-row' : '') + '" id="admin-row-' + idx + '">' +
+      '<div class="admin-doc-header"><span class="admin-doc-key">' + doc.key + '</span>' +
+      '<span class="admin-doc-style ' + styleLabel + '">' + styleLabel + '</span>' +
+      '<label class="admin-toggle"><input type="checkbox"' + (!isHidden ? ' checked' : '') + ' onchange="adminToggleHidden(' + idx + ', this.checked)"><span class="admin-toggle-slider"></span></label></div>' +
+      '<div class="admin-input-label">Button Label</div>' +
+      '<input class="admin-input" id="admin-label-' + idx + '" value="' + (doc.label || '') + '" placeholder="Button label" />' +
+      (doc.action === 'emergency' ? '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Links to Emergency screen — no URL needed</div>' :
+      '<div class="admin-input-label" style="margin-top:8px;">URL</div><input class="admin-input" id="admin-url-' + idx + '" value="' + (doc.url && doc.url !== '#' ? doc.url : '') + '" placeholder="https://..." />') +
+      '</div>';
   });
   list.innerHTML = html;
 }
 
-function escHtml(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function adminToggleHidden(idx, isVisible) {
+  const row = document.getElementById('admin-row-' + idx);
+  if (isVisible) row.classList.remove('hidden-row'); else row.classList.add('hidden-row');
 }
 
-function saveAdminDocs() {
-  var btn = document.getElementById('adminSaveBtn');
-  btn.disabled = true;
-  btn.textContent = 'Saving...';
+function saveAdminConfig() {
+  const btn = document.getElementById('adminSaveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
   DOCS.forEach(function(doc, idx) {
-    var lbl = document.getElementById('adm-lbl-' + idx);
-    var vis = document.getElementById('adm-vis-' + idx);
-    var urlEl = document.getElementById('adm-url-' + idx);
-    if (lbl) doc.label = lbl.value;
-    if (vis) doc.hidden = !vis.checked;
-    if (urlEl) doc.url = urlEl.value;
+    const labelEl = document.getElementById('admin-label-' + idx);
+    const urlEl = document.getElementById('admin-url-' + idx);
+    const toggleEl = document.querySelector('#admin-row-' + idx + ' input[type=checkbox]');
+    if (labelEl) doc.label = labelEl.value;
+    if (urlEl) doc.url = urlEl.value || '#';
+    if (toggleEl) doc.hidden = !toggleEl.checked;
   });
-  var data = DOCS.map(function(doc) {
-    return [doc.key, doc.label, doc.style, doc.url || '#', doc.hidden ? 'true' : 'false', doc.action || ''].join('|');
-  }).join('\n');
-  var url = EXEC_URL + '?action=saveConfig&data=' + encodeURIComponent(data);
-  fetch(url, { redirect: 'follow' })
-    .then(function() {
-      renderDocGrid();
-      showToast('Saved — document buttons updated');
-      btn.disabled = false;
-      btn.textContent = 'Save & Apply Changes';
-      showScreen('dashboard');
-    })
-    .catch(function() {
-      renderDocGrid();
-      showToast('Applied locally (sheet save failed)', true);
-      btn.disabled = false;
-      btn.textContent = 'Save & Apply Changes';
-      showScreen('dashboard');
-    });
+  renderDocGrid();
+  const configData = DOCS.map(function(doc) { return [doc.key, doc.label, doc.style, doc.url || '#', doc.hidden ? 'true' : 'false', doc.action || ''].join('|'); }).join('\n');
+  fetch(EXEC_URL + '?action=saveConfig&data=' + encodeURIComponent(configData), { redirect: 'follow' })
+    .then(function() { showToast('Config saved'); btn.disabled = false; btn.textContent = 'Save Changes'; showScreen('documents'); setNav('documents'); })
+    .catch(function() { showToast('Saved locally — sheet update failed', true); btn.disabled = false; btn.textContent = 'Save Changes'; });
 }
 
 loadData();
