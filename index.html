@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,12 +161,16 @@
   .kpi-wide-value { color: var(--text-primary); font-family: var(--font-display); font-size: 18px; font-weight: 600; }
   .chart-placeholder { margin: 0 14px 20px; background: var(--navy-mid); border-radius: 10px; border: 1px solid var(--navy-border); padding: 22px; text-align: center; cursor: pointer; min-height: 60px; }
   .chart-placeholder-label { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px; }
-  .emerg-body { flex: 1; padding: 24px 18px; display: flex; flex-direction: column; gap: 14px; }
-  .emerg-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-primary); text-align: center; letter-spacing: 1px; padding-bottom: 10px; border-bottom: 1px solid var(--navy-border); }
-  .emerg-call-btn { background: var(--red-bright); color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; padding: 24px; border-radius: 12px; border: none; cursor: pointer; text-align: center; animation: pulse 2s infinite; min-height: 72px; }
+  /* EMERGENCY */
+  .emerg-body { flex: 1; padding: 24px 18px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+  .emerg-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-primary); text-align: center; letter-spacing: 1px; padding-bottom: 10px; border-bottom: 1px solid var(--navy-border); cursor: pointer; }
+  .emerg-call-btn { background: var(--red-bright); color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: 1px; padding: 24px; border-radius: 12px; border: none; cursor: pointer; text-align: center; animation: pulse 2s infinite; min-height: 72px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; width: 100%; }
+  .emerg-call-number { font-size: 14px; font-weight: 400; letter-spacing: 2px; opacity: 0.9; }
   @keyframes pulse { 0%, 100% { background: var(--red-bright); } 50% { background: #ff3333; } }
-  .emerg-item-btn { background: #6a1010; color: #fff; font-family: var(--font-display); font-size: 17px; font-weight: 500; letter-spacing: 0.5px; padding: 20px; border-radius: 10px; border: none; cursor: pointer; text-align: center; min-height: 62px; }
+  .emerg-item-btn { background: #6a1010; color: #fff; font-family: var(--font-display); font-size: 17px; font-weight: 500; letter-spacing: 0.5px; padding: 20px; border-radius: 10px; border: none; cursor: pointer; text-align: center; min-height: 62px; text-decoration: none; display: flex; align-items: center; justify-content: center; width: 100%; }
   .emerg-item-btn:active { background: #8a1818; }
+  .emerg-section-label { font-family: var(--font-display); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; padding: 4px 0 2px; }
+  /* ADMIN */
   .admin-pin-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 20px; gap: 16px; }
   .admin-pin-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--text-primary); letter-spacing: 1px; }
   .admin-pin-sub { font-size: 13px; color: var(--text-muted); }
@@ -173,7 +178,7 @@
   .admin-pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--navy-border); transition: background 0.15s; }
   .admin-pin-dot.filled { background: var(--blue-bright); }
   .admin-pin-pad { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; max-width: 280px; }
-  .admin-pin-key { background: var(--navy-light); border: 1px solid var(--navy-border); color: var(--text-primary); font-family: var(--font-display); font-size: 24px; font-weight: 600; padding: 18px; border-radius: 10px; cursor: pointer; text-align: center; border: none; min-height: 62px; }
+  .admin-pin-key { background: var(--navy-light); color: var(--text-primary); font-family: var(--font-display); font-size: 24px; font-weight: 600; padding: 18px; border-radius: 10px; cursor: pointer; text-align: center; border: none; min-height: 62px; }
   .admin-pin-key:active { background: var(--navy-border); }
   .admin-pin-key.del { font-size: 18px; color: var(--text-muted); }
   .admin-pin-error { color: var(--red-bright); font-size: 13px; min-height: 18px; }
@@ -215,14 +220,15 @@
 </head>
 <body>
 <div id="app">
- 
+
   <div id="loading">
     <div class="load-logo">PalmCrest</div>
     <div class="load-sub">LiveTrack</div>
     <div class="load-bar"><div class="load-progress" id="loadBar"></div></div>
     <div class="load-status" id="loadStatus">Loading data...</div>
   </div>
- 
+
+  <!-- DASHBOARD -->
   <div id="screen-dashboard" class="screen">
     <div class="topbar"><span class="topbar-icon"></span><span class="topbar-brand" onclick="adminTap()">PalmCrest LiveTrack</span><span class="topbar-icon"></span></div>
     <div class="scroll-area">
@@ -248,7 +254,8 @@
       <button class="nav-btn" id="nav-areaprogress" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
- 
+
+  <!-- WORK ORDERS -->
   <div id="screen-workorders" class="screen">
     <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Work Orders</span><span style="width:70px"></span></div>
     <div class="search-bar">
@@ -283,7 +290,8 @@
       <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
- 
+
+  <!-- TASK DETAIL -->
   <div id="screen-taskdetail" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('workorders')">◀ Work Orders</span><span style="flex:1"></span></div>
     <div class="detail-content" id="taskDetailContent"></div>
@@ -294,7 +302,8 @@
       <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
- 
+
+  <!-- EDIT PROGRESS -->
   <div id="screen-editprogress" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('taskdetail')">◀ Back</span><span class="topbar-brand">Update Progress</span><span style="width:24px"></span></div>
     <div class="edit-body">
@@ -312,7 +321,8 @@
       <button class="save-btn" id="saveBtn" onclick="saveProgress()">Save → Update Scheduler</button>
     </div>
   </div>
- 
+
+  <!-- DOCUMENTS — emergency buttons removed -->
   <div id="screen-documents" class="screen">
     <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Documents</span><span style="width:70px"></span></div>
     <div class="scroll-area">
@@ -326,7 +336,8 @@
       <button class="nav-btn" onclick="showScreen('areaprogress'); setNav('areaprogress')"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
- 
+
+  <!-- AREA PROGRESS -->
   <div id="screen-areaprogress" class="screen">
     <div class="topbar"><button class="home-btn" onclick="showScreen('dashboard'); setNav('dashboard')">⊞ Home</button><span class="topbar-brand">Area Progress</span><span style="width:70px"></span></div>
     <div class="scroll-area">
@@ -358,17 +369,27 @@
       <button class="nav-btn active"><span class="nav-icon">📊</span>Area</button>
     </div>
   </div>
- 
+
+  <!-- EMERGENCY PAGE -->
   <div id="screen-emergency" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('dashboard')">◀ Back</span><span class="topbar-brand">Emergency</span><span style="width:24px"></span></div>
     <div class="emerg-body">
-      <div class="emerg-title">Emergency Info</div>
-      <button class="emerg-call-btn">⚠ EMERGENCY CALL ⚠</button>
-      <button class="emerg-item-btn" onclick="openDoc('emergency-contacts')">Emergency Contacts</button>
-      <button class="emerg-item-btn" onclick="openDoc('first-aid')">First Aid Information</button>
+      <!-- Triple-tap "Emergency Info" to open Emergency Admin -->
+      <div class="emerg-title" onclick="emergAdminTap()">Emergency Info</div>
+      <!-- Emergency Call button — dials configured number -->
+      <a id="emergCallBtn" href="tel:000" class="emerg-call-btn">
+        <span id="emergCallLabel">⚠ EMERGENCY CALL ⚠</span>
+        <span class="emerg-call-number" id="emergCallDisplay">000</span>
+      </a>
+      <!-- 3 configurable URL buttons -->
+      <div class="emerg-section-label">Emergency Resources</div>
+      <button class="emerg-item-btn" id="emergBtn1" onclick="openEmergDoc(0)">Emergency Contacts</button>
+      <button class="emerg-item-btn" id="emergBtn2" onclick="openEmergDoc(1)">First Aid Information</button>
+      <button class="emerg-item-btn" id="emergBtn3" onclick="openEmergDoc(2)">Emergency Response Plan</button>
     </div>
   </div>
- 
+
+  <!-- DOCUMENTS ADMIN -->
   <div id="screen-admin" class="screen">
     <div class="topbar"><span class="topbar-back" onclick="showScreen('dashboard')">◀ Back</span><span class="topbar-brand">Admin</span><span style="width:60px"></span></div>
     <div id="adminPinWrap" class="admin-pin-wrap">
@@ -399,47 +420,125 @@
       <button class="admin-save-btn" id="adminSaveBtn" onclick="saveAdminConfig()">Save Changes</button>
     </div>
   </div>
- 
+
+  <!-- EMERGENCY ADMIN — triple-tap "Emergency Info" to access -->
+  <div id="screen-emergadmin" class="screen">
+    <div class="topbar"><span class="topbar-back" onclick="showScreen('emergency')">◀ Emergency</span><span class="topbar-brand">Emergency Admin</span><span style="width:60px"></span></div>
+    <div id="emergAdminPinWrap" class="admin-pin-wrap">
+      <div class="admin-pin-title">Admin Access</div>
+      <div class="admin-pin-sub">Enter PIN to continue</div>
+      <div class="admin-pin-dots">
+        <div class="admin-pin-dot" id="epd0"></div><div class="admin-pin-dot" id="epd1"></div>
+        <div class="admin-pin-dot" id="epd2"></div><div class="admin-pin-dot" id="epd3"></div>
+      </div>
+      <div class="admin-pin-error" id="emergPinError"></div>
+      <div class="admin-pin-pad">
+        <button class="admin-pin-key" onclick="emergPinKey('1')">1</button>
+        <button class="admin-pin-key" onclick="emergPinKey('2')">2</button>
+        <button class="admin-pin-key" onclick="emergPinKey('3')">3</button>
+        <button class="admin-pin-key" onclick="emergPinKey('4')">4</button>
+        <button class="admin-pin-key" onclick="emergPinKey('5')">5</button>
+        <button class="admin-pin-key" onclick="emergPinKey('6')">6</button>
+        <button class="admin-pin-key" onclick="emergPinKey('7')">7</button>
+        <button class="admin-pin-key" onclick="emergPinKey('8')">8</button>
+        <button class="admin-pin-key" onclick="emergPinKey('9')">9</button>
+        <button class="admin-pin-key" onclick="emergPinKey('0')">0</button>
+        <button class="admin-pin-key del" onclick="emergPinDel()">⌫</button>
+      </div>
+    </div>
+    <div id="emergAdminContent" style="display:none; flex:1; overflow-y:auto; padding:16px;">
+      <div class="admin-section-title">Emergency Call Button</div>
+      <div class="admin-doc-row">
+        <div class="admin-input-label">Button Label</div>
+        <input class="admin-input" id="emergCallLabelInput" value="⚠ EMERGENCY CALL ⚠" placeholder="Button label" />
+        <div class="admin-input-label" style="margin-top:8px;">Phone Number (e.g. 0412345678)</div>
+        <input class="admin-input" id="emergCallPhone" value="000" placeholder="000" type="tel" />
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Tapping the button will dial this number directly.</div>
+      </div>
+      <div class="admin-section-title">Emergency URL Buttons (3)</div>
+      <div class="admin-doc-row">
+        <div class="admin-input-label">Button 1 — Label</div>
+        <input class="admin-input" id="emergBtnLabel0" value="Emergency Contacts" placeholder="Button label" />
+        <div class="admin-input-label" style="margin-top:8px;">URL</div>
+        <input class="admin-input" id="emergBtnUrl0" value="" placeholder="https://..." />
+        <div class="admin-doc-header" style="margin-top:8px;">
+          <span class="admin-doc-key">Show button</span>
+          <label class="admin-toggle"><input type="checkbox" id="emergBtnVis0" checked><span class="admin-toggle-slider"></span></label>
+        </div>
+      </div>
+      <div class="admin-doc-row">
+        <div class="admin-input-label">Button 2 — Label</div>
+        <input class="admin-input" id="emergBtnLabel1" value="First Aid Information" placeholder="Button label" />
+        <div class="admin-input-label" style="margin-top:8px;">URL</div>
+        <input class="admin-input" id="emergBtnUrl1" value="" placeholder="https://..." />
+        <div class="admin-doc-header" style="margin-top:8px;">
+          <span class="admin-doc-key">Show button</span>
+          <label class="admin-toggle"><input type="checkbox" id="emergBtnVis1" checked><span class="admin-toggle-slider"></span></label>
+        </div>
+      </div>
+      <div class="admin-doc-row">
+        <div class="admin-input-label">Button 3 — Label</div>
+        <input class="admin-input" id="emergBtnLabel2" value="Emergency Response Plan" placeholder="Button label" />
+        <div class="admin-input-label" style="margin-top:8px;">URL</div>
+        <input class="admin-input" id="emergBtnUrl2" value="" placeholder="https://..." />
+        <div class="admin-doc-header" style="margin-top:8px;">
+          <span class="admin-doc-key">Show button</span>
+          <label class="admin-toggle"><input type="checkbox" id="emergBtnVis2" checked><span class="admin-toggle-slider"></span></label>
+        </div>
+      </div>
+      <button class="admin-save-btn" id="emergAdminSaveBtn" onclick="saveEmergAdminConfig()">Save Changes</button>
+    </div>
+  </div>
+
   <div id="toast"></div>
 </div>
- 
+
 <script>
-const EXEC_URL = 'https://script.google.com/macros/s/AKfycbwVEauHZ0YbwYaIl976cYLKM3QeN3iPcq6G1-LOhJA63ILc3m99ZAqJBsb6nTwd_3Wj4Q/exec';
- 
-const DOCS = [
-  { key: 'first-aid',          label: 'First Aid Information',   style: 'red',      url: '#' },
-  { key: 'emergency-response', label: 'Emergency Response',      style: 'red',      url: '#' },
-  { key: 'emergency-call',     label: '⚠ Emergency Call',        style: 'red-full', action: 'emergency' },
-  { key: 'schedule',           label: 'CPG3 Schedule',           style: 'green',    url: '#' },
-  { key: 'org-chart',          label: 'Shutdown Org Chart',      style: 'dark',     url: '#' },
-  { key: 'phone-list',         label: 'Phone List',              style: 'dark',     url: '#' },
-  { key: 'lightning',          label: 'Lightning Alerts',        style: 'dark',     url: '#' },
-  { key: 'weather',            label: 'Weather',                 style: 'dark',     url: '#' },
-  { key: 'crane',              label: 'Crane Interactions',      style: 'dark',     url: '#' },
-  { key: 'supervisor',         label: 'Supervisor Areas',        style: 'dark',     url: '#' },
-  { key: 'radio',              label: 'Radio Channels',          style: 'dark',     url: '#' },
-  { key: 'traffic',            label: 'Traffic Management Plan', style: 'dark',     url: '#' },
-  { key: 'escalation',         label: 'Escalation Matrix',       style: 'dark',     url: '#' },
-  { key: 'hse',                label: 'HSE Controls',            style: 'dark',     url: '#' },
-  { key: 'top-view',           label: 'CR3 Top View',            style: 'dark',     url: '#' },
-  { key: 'evac',               label: 'Evac Plans',              style: 'dark',     url: '#' },
-  { key: 'emergency-contacts', label: 'Emergency Contacts',      style: 'dark',     url: '#', hidden: true },
+// ── YOUR APPS SCRIPT URL — do not change this ──
+const EXEC_URL = 'https://script.google.com/macros/s/AKfycbwp4KdsvPWv2pON1ilOTjaJhYeLJpLZWBfShz2nBZRPCsCleVH40o-GAURk9gPg7d-BZw/exec';
+
+// ── DOCUMENT BUTTONS (no emergency buttons) ──
+var DOCS = [
+  { key: 'schedule',   label: 'CPG3 Schedule',           style: 'green', url: '#' },
+  { key: 'org-chart',  label: 'Shutdown Org Chart',      style: 'dark',  url: '#' },
+  { key: 'phone-list', label: 'Phone List',              style: 'dark',  url: '#' },
+  { key: 'lightning',  label: 'Lightning Alerts',        style: 'dark',  url: '#' },
+  { key: 'weather',    label: 'Weather',                 style: 'dark',  url: '#' },
+  { key: 'crane',      label: 'Crane Interactions',      style: 'dark',  url: '#' },
+  { key: 'supervisor', label: 'Supervisor Areas',        style: 'dark',  url: '#' },
+  { key: 'radio',      label: 'Radio Channels',          style: 'dark',  url: '#' },
+  { key: 'traffic',    label: 'Traffic Management Plan', style: 'dark',  url: '#' },
+  { key: 'escalation', label: 'Escalation Matrix',       style: 'dark',  url: '#' },
+  { key: 'hse',        label: 'HSE Controls',            style: 'dark',  url: '#' },
+  { key: 'top-view',   label: 'CR3 Top View',            style: 'dark',  url: '#' },
+  { key: 'evac',       label: 'Evac Plans',              style: 'dark',  url: '#' },
 ];
- 
+
+// ── EMERGENCY CONFIG defaults ──
+var EMERG_CONFIG = {
+  callLabel: '⚠ EMERGENCY CALL ⚠',
+  callPhone: '000',
+  buttons: [
+    { label: 'Emergency Contacts',      url: '#', visible: true },
+    { label: 'First Aid Information',   url: '#', visible: true },
+    { label: 'Emergency Response Plan', url: '#', visible: true },
+  ]
+};
+
+// ── RENDER DOCUMENT GRID ──
 function renderDocGrid() {
-  const grid = document.getElementById('docGrid');
-  let html = '';
+  var grid = document.getElementById('docGrid');
+  var html = '';
   DOCS.forEach(function(doc) {
     if (doc.hidden) return;
-    const onclick = doc.action === 'emergency' ? "showScreen('emergency')" : "openDoc('" + doc.key + "')";
-    html += '<button class="doc-btn ' + doc.style + '" onclick="' + onclick + '">' + doc.label + '</button>';
+    html += '<button class="doc-btn ' + doc.style + '" onclick="openDoc(\'' + doc.key + '\')">' + doc.label + '</button>';
   });
   grid.innerHTML = html;
 }
- 
+
 function openDoc(key) {
-  const doc = DOCS.find(function(d) { return d.key === key; });
-  let url = doc ? doc.url : null;
+  var doc = DOCS.find(function(d) { return d.key === key; });
+  var url = doc ? doc.url : null;
   if (url && url !== '#') {
     if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
     window.open(url, '_blank');
@@ -447,10 +546,123 @@ function openDoc(key) {
     showToast('Document URL not configured yet', true);
   }
 }
- 
-let allTasks = [], summaryData = [], currentArea = 0, selectedTask = null, currentProgress = 0;
-let expandedWOs = new Set(), editMode = 'task', selectedWONumber = null;
- 
+
+// ── RENDER EMERGENCY PAGE ──
+function renderEmergencyPage() {
+  var callBtn = document.getElementById('emergCallBtn');
+  var phone = EMERG_CONFIG.callPhone || '000';
+  callBtn.href = 'tel:' + phone.replace(/\s/g, '');
+  document.getElementById('emergCallLabel').textContent = EMERG_CONFIG.callLabel || '⚠ EMERGENCY CALL ⚠';
+  document.getElementById('emergCallDisplay').textContent = phone;
+  for (var i = 0; i < 3; i++) {
+    var btn = document.getElementById('emergBtn' + (i + 1));
+    var cfg = EMERG_CONFIG.buttons[i] || {};
+    btn.textContent = cfg.label || ('Button ' + (i + 1));
+    btn.style.display = (cfg.visible === false) ? 'none' : 'flex';
+  }
+}
+
+function openEmergDoc(idx) {
+  var cfg = EMERG_CONFIG.buttons[idx];
+  if (cfg && cfg.url && cfg.url !== '#') {
+    window.open(cfg.url, '_blank');
+  } else {
+    showToast('URL not configured yet', true);
+  }
+}
+
+// ── EMERGENCY ADMIN ──
+var emergAdminTapCount = 0, emergAdminTapTimer = null, emergPinEntry = '';
+
+function emergAdminTap() {
+  emergAdminTapCount++;
+  clearTimeout(emergAdminTapTimer);
+  emergAdminTapTimer = setTimeout(function() { emergAdminTapCount = 0; }, 800);
+  if (emergAdminTapCount >= 3) {
+    emergAdminTapCount = 0;
+    emergPinEntry = '';
+    updateEmergPinDots();
+    document.getElementById('emergPinError').textContent = '';
+    document.getElementById('emergAdminPinWrap').style.display = 'flex';
+    document.getElementById('emergAdminContent').style.display = 'none';
+    showScreen('emergadmin');
+  }
+}
+
+function emergPinKey(k) {
+  if (emergPinEntry.length >= 4) return;
+  emergPinEntry += k;
+  updateEmergPinDots();
+  if (emergPinEntry.length === 4) {
+    setTimeout(function() {
+      if (emergPinEntry === ADMIN_PIN) {
+        document.getElementById('emergAdminPinWrap').style.display = 'none';
+        document.getElementById('emergAdminContent').style.display = 'block';
+        loadEmergAdminForm();
+      } else {
+        document.getElementById('emergPinError').textContent = 'Incorrect PIN';
+        emergPinEntry = '';
+        updateEmergPinDots();
+      }
+    }, 200);
+  }
+}
+
+function emergPinDel() {
+  emergPinEntry = emergPinEntry.slice(0, -1);
+  updateEmergPinDots();
+  document.getElementById('emergPinError').textContent = '';
+}
+
+function updateEmergPinDots() {
+  for (var i = 0; i < 4; i++) {
+    document.getElementById('epd' + i).classList.toggle('filled', i < emergPinEntry.length);
+  }
+}
+
+function loadEmergAdminForm() {
+  document.getElementById('emergCallLabelInput').value = EMERG_CONFIG.callLabel || '⚠ EMERGENCY CALL ⚠';
+  document.getElementById('emergCallPhone').value = EMERG_CONFIG.callPhone || '000';
+  for (var i = 0; i < 3; i++) {
+    var cfg = EMERG_CONFIG.buttons[i] || {};
+    document.getElementById('emergBtnLabel' + i).value = cfg.label || '';
+    document.getElementById('emergBtnUrl' + i).value = (cfg.url && cfg.url !== '#') ? cfg.url : '';
+    document.getElementById('emergBtnVis' + i).checked = (cfg.visible !== false);
+  }
+}
+
+function saveEmergAdminConfig() {
+  var btn = document.getElementById('emergAdminSaveBtn');
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+  EMERG_CONFIG.callLabel = document.getElementById('emergCallLabelInput').value || '⚠ EMERGENCY CALL ⚠';
+  EMERG_CONFIG.callPhone = document.getElementById('emergCallPhone').value || '000';
+  for (var i = 0; i < 3; i++) {
+    EMERG_CONFIG.buttons[i] = {
+      label:   document.getElementById('emergBtnLabel' + i).value || ('Button ' + (i + 1)),
+      url:     document.getElementById('emergBtnUrl' + i).value || '#',
+      visible: document.getElementById('emergBtnVis' + i).checked
+    };
+  }
+  renderEmergencyPage();
+  fetch(EXEC_URL + '?action=saveEmergConfig&data=' + encodeURIComponent(JSON.stringify(EMERG_CONFIG)), { redirect: 'follow' })
+    .then(function() {
+      showToast('Emergency config saved');
+      btn.disabled = false;
+      btn.textContent = 'Save Changes';
+      showScreen('emergency');
+    })
+    .catch(function() {
+      showToast('Saved locally — server update failed', true);
+      btn.disabled = false;
+      btn.textContent = 'Save Changes';
+    });
+}
+
+// ── CORE DATA ──
+var allTasks = [], summaryData = [], currentArea = 0, selectedTask = null, currentProgress = 0;
+var expandedWOs = new Set(), editMode = 'task', selectedWONumber = null;
+
 function loadData() {
   setLoad(20, 'Connecting...');
   fetch(EXEC_URL + '?action=data', { redirect: 'follow' })
@@ -464,7 +676,11 @@ function loadData() {
         DOCS.length = 0;
         data.config.forEach(function(d) { DOCS.push(d); });
       }
+      if (data.emergConfig && data.emergConfig.callPhone) {
+        EMERG_CONFIG = data.emergConfig;
+      }
       renderDocGrid();
+      renderEmergencyPage();
       setLoad(100, 'Ready');
       setTimeout(function() { document.getElementById('loading').style.display = 'none'; showScreen('dashboard'); }, 300);
     })
@@ -474,15 +690,14 @@ function loadData() {
         '<button onclick="location.reload()" style="background:#1a6eb5;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-size:14px;cursor:pointer;">Retry</button></div>';
     });
 }
- 
+
 function setLoad(pct, msg) { document.getElementById('loadBar').style.width = pct + '%'; document.getElementById('loadStatus').textContent = msg; }
- 
 function applyNotes(data) { document.getElementById('dashNotice').textContent = (data && data.note) ? data.note : 'No notices at this time.'; }
- 
+
 function applySummary(data) {
   summaryData = Array.isArray(data) ? data : [];
   if (summaryData.length > 0) {
-    const first = summaryData[0];
+    var first = summaryData[0];
     document.getElementById('kpiTarget').textContent = (first.shutTarget !== undefined && first.shutTarget !== '') ? fmt(Math.round(first.shutTarget * 100)) + '%' : '—';
     document.getElementById('kpiActual').textContent = (first.actualWorkPct !== undefined && first.actualWorkPct !== '') ? fmt(Math.round(first.actualWorkPct * 100)) + '%' : '—';
     document.getElementById('kpiDuration').textContent = fmt(first.kpiDuration);
@@ -491,13 +706,13 @@ function applySummary(data) {
     renderAreaProgress();
   }
 }
- 
+
 function fmt(val) {
   if (val === null || val === undefined || val === '') return '—';
   if (typeof val === 'number') return Number.isInteger(val) ? val : parseFloat(val.toFixed(1));
   return val;
 }
- 
+
 function applyWOs(data) {
   allTasks = (Array.isArray(data) ? data : []).map(function(r) {
     return { row: r[0], name: r[1], woNumber: r[2], taskNumber: r[3], duration: r[4], pctComplete: r[5], start: r[6], finish: r[7], team: r[8], floc: r[9], resource: r[10], pctProgress: r[11], woHeader: r[12], subTeam: r[13], group: r[14], notes: r[15], woStatus: r[16] };
@@ -505,77 +720,78 @@ function applyWOs(data) {
   populateFilterOptions();
   renderWOList();
 }
- 
+
 function populateFilterOptions() { fillSelect('filterTeam', 'team', allTasks, 'All Teams'); updateCascadingFilters(); }
- 
+
 function fillSelect(id, key, tasks, label) {
-  const sel = document.getElementById(id);
-  const current = sel.value;
-  const vals = [...new Set(tasks.map(function(t) { return t[key]; }).filter(Boolean))].sort();
+  var sel = document.getElementById(id);
+  var current = sel.value;
+  var vals = [...new Set(tasks.map(function(t) { return t[key]; }).filter(Boolean))].sort();
   sel.innerHTML = '<option value="">' + label + '</option>' + vals.map(function(v) { return '<option value="' + v + '"' + (v === current ? ' selected' : '') + '>' + v + '</option>'; }).join('');
 }
- 
+
 function updateCascadingFilters() {
-  const team = document.getElementById('filterTeam').value;
-  const subTeam = document.getElementById('filterSubTeam').value;
-  const group = document.getElementById('filterGroup').value;
-  const afterTeam = allTasks.filter(function(t) { return !team || t.team === team; });
-  const afterSubTeam = afterTeam.filter(function(t) { return !subTeam || t.subTeam === subTeam; });
-  const afterGroup = afterSubTeam.filter(function(t) { return !group || t.group === group; });
+  var team = document.getElementById('filterTeam').value;
+  var subTeam = document.getElementById('filterSubTeam').value;
+  var group = document.getElementById('filterGroup').value;
+  var afterTeam = allTasks.filter(function(t) { return !team || t.team === team; });
+  var afterSubTeam = afterTeam.filter(function(t) { return !subTeam || t.subTeam === subTeam; });
+  var afterGroup = afterSubTeam.filter(function(t) { return !group || t.group === group; });
   fillSelect('filterSubTeam', 'subTeam', afterTeam, 'All Sub Teams');
   fillSelect('filterGroup', 'group', afterSubTeam, 'All Groups');
   fillSelect('filterResource', 'resource', afterGroup, 'All Resources');
   fillSelect('filterStatus', 'woStatus', afterGroup, 'All Statuses');
 }
- 
+
 function toggleFilterPanel() { document.getElementById('filterPanel').classList.toggle('open'); document.getElementById('filterToggleBtn').classList.toggle('active'); }
- 
+
 function clearFilters() {
   ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].forEach(function(id) { document.getElementById(id).value = ''; });
   document.getElementById('searchInput').value = '';
   updateCascadingFilters(); applyFilters();
 }
- 
+
 function applyFilters() { updateCascadingFilters(); renderWOList(); updateFilterBadge(); }
- 
+
 function updateFilterBadge() {
-  const active = ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].filter(function(id) { return document.getElementById(id).value; }).length;
-  const keyword = document.getElementById('searchInput').value;
-  document.getElementById('filterToggleBtn').textContent = (active + (keyword ? 1 : 0)) > 0 ? 'Filter (' + (active + (keyword ? 1 : 0)) + ')' : 'Filter';
+  var active = ['filterTeam','filterSubTeam','filterGroup','filterResource','filterStatus'].filter(function(id) { return document.getElementById(id).value; }).length;
+  var keyword = document.getElementById('searchInput').value;
+  var total = active + (keyword ? 1 : 0);
+  document.getElementById('filterToggleBtn').textContent = total > 0 ? 'Filter (' + total + ')' : 'Filter';
 }
- 
+
 function getFilteredTasks() {
-  const keyword = (document.getElementById('searchInput').value || '').toLowerCase();
-  const team = document.getElementById('filterTeam').value;
-  const subTeam = document.getElementById('filterSubTeam').value;
-  const group = document.getElementById('filterGroup').value;
-  const resource = document.getElementById('filterResource').value;
-  const status = document.getElementById('filterStatus').value;
+  var keyword = (document.getElementById('searchInput').value || '').toLowerCase();
+  var team = document.getElementById('filterTeam').value;
+  var subTeam = document.getElementById('filterSubTeam').value;
+  var group = document.getElementById('filterGroup').value;
+  var resource = document.getElementById('filterResource').value;
+  var status = document.getElementById('filterStatus').value;
   return allTasks.filter(function(t) {
     if (team && t.team !== team) return false;
     if (subTeam && t.subTeam !== subTeam) return false;
     if (group && t.group !== group) return false;
     if (resource && t.resource !== resource) return false;
     if (status && t.woStatus !== status) return false;
-    if (keyword) { const s = [t.name, t.woNumber, t.floc, t.woHeader, t.resource, t.team].join(' ').toLowerCase(); if (!s.includes(keyword)) return false; }
+    if (keyword) { var s = [t.name, t.woNumber, t.floc, t.woHeader, t.resource, t.team].join(' ').toLowerCase(); if (!s.includes(keyword)) return false; }
     return true;
   });
 }
- 
+
 function renderWOList() {
-  const list = document.getElementById('woList');
-  const filtered = getFilteredTasks();
+  var list = document.getElementById('woList');
+  var filtered = getFilteredTasks();
   if (filtered.length === 0) { list.innerHTML = '<div class="no-results">No tasks match your search or filters.</div>'; return; }
-  const groups = new Map();
+  var groups = new Map();
   filtered.forEach(function(task) {
-    const key = task.woNumber;
+    var key = task.woNumber;
     if (!groups.has(key)) groups.set(key, { header: task.woHeader || task.woNumber, tasks: [] });
     groups.get(key).tasks.push(task);
   });
   groups.forEach(function(g) { g.tasks.sort(function(a, b) { return (a.taskNumber || 0) - (b.taskNumber || 0); }); });
-  let html = '';
+  var html = '';
   groups.forEach(function(group, woNum) {
-    const isOpen = expandedWOs.has(woNum);
+    var isOpen = expandedWOs.has(woNum);
     html += '<div class="wo-row" onclick="toggleWO(\'' + woNum + '\')">' +
       '<span class="wo-arrow ' + (isOpen ? 'open' : '') + '">▶</span>' +
       '<span class="wo-name">' + (group.header || woNum) + '</span>' +
@@ -584,8 +800,8 @@ function renderWOList() {
       html += '<div class="wo-update-bar"><span class="wo-update-bar-label">' + group.tasks.length + ' task' + (group.tasks.length !== 1 ? 's' : '') + ' in this WO</span>' +
         '<button class="wo-update-all-btn" onclick="event.stopPropagation(); openUpdateWO(\'' + woNum + '\')">Update All Tasks</button></div>';
       group.tasks.forEach(function(task) {
-        const pct = (task.pctProgress !== '' && task.pctProgress !== null) ? Number(task.pctProgress) : 0;
-        const cls = pct >= 100 ? 'complete' : pct > 0 ? 'inprogress' : 'notstarted';
+        var pct = (task.pctProgress !== '' && task.pctProgress !== null) ? Number(task.pctProgress) : 0;
+        var cls = pct >= 100 ? 'complete' : pct > 0 ? 'inprogress' : 'notstarted';
         html += '<div class="task-row ' + cls + '" onclick="selectTask(' + task.row + ')">' +
           '<span class="task-name">' + (task.name || '') + '</span>' +
           '<span class="task-cell">' + (task.woNumber || '') + '</span>' +
@@ -596,18 +812,18 @@ function renderWOList() {
   });
   list.innerHTML = html;
 }
- 
+
 function toggleWO(woNum) { if (expandedWOs.has(woNum)) expandedWOs.delete(woNum); else expandedWOs.add(woNum); renderWOList(); }
- 
+
 function selectTask(rowNum) {
   selectedTask = allTasks.find(function(t) { return t.row === rowNum; });
   if (!selectedTask) return;
   renderTaskDetail(); showScreen('taskdetail');
 }
- 
+
 function renderTaskDetail() {
-  const t = selectedTask;
-  const pct = (t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0;
+  var t = selectedTask;
+  var pct = (t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0;
   document.getElementById('taskDetailContent').innerHTML =
     '<div class="detail-wo-label">WO: ' + (t.woNumber || '') + '</div>' +
     '<div class="detail-task-name">' + (t.name || '') + '</div>' +
@@ -628,15 +844,15 @@ function renderTaskDetail() {
     (t.notes ? '<div class="detail-cell full"><div class="detail-cell-label">Notes</div><div class="detail-cell-value">' + t.notes + '</div></div>' : '') +
     '</div><button class="edit-task-btn" onclick="openEditScreen()">Update Progress</button>';
 }
- 
+
 function formatDate(val) {
   if (!val) return '—';
-  try { const d = new Date(val); if (isNaN(d)) return val; return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch(e) { return val; }
+  try { var d = new Date(val); if (isNaN(d)) return val; return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch(e) { return val; }
 }
- 
+
 function openEditScreen() {
   editMode = 'task'; selectedWONumber = null;
-  const t = selectedTask;
+  var t = selectedTask;
   currentProgress = (t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0;
   document.getElementById('editTaskTitle').textContent = t.name || '';
   document.getElementById('progressDisplay').textContent = currentProgress;
@@ -647,12 +863,12 @@ function openEditScreen() {
   document.getElementById('saveBtn').classList.remove('saving');
   showScreen('editprogress');
 }
- 
+
 function openUpdateWO(woNum) {
   editMode = 'wo'; selectedWONumber = woNum;
-  const tasks = allTasks.filter(function(t) { return t.woNumber === woNum; });
+  var tasks = allTasks.filter(function(t) { return t.woNumber === woNum; });
   if (!tasks.length) return;
-  const avgPct = Math.round(tasks.reduce(function(sum, t) { return sum + ((t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0); }, 0) / tasks.length);
+  var avgPct = Math.round(tasks.reduce(function(sum, t) { return sum + ((t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0); }, 0) / tasks.length);
   currentProgress = avgPct;
   document.getElementById('editTaskTitle').textContent = (tasks[0].woHeader || woNum) + ' — All ' + tasks.length + ' Tasks';
   document.getElementById('progressDisplay').textContent = currentProgress;
@@ -663,15 +879,15 @@ function openUpdateWO(woNum) {
   document.getElementById('saveBtn').classList.remove('saving');
   showScreen('editprogress');
 }
- 
+
 function changeProgress(delta) { currentProgress = Math.max(0, Math.min(100, currentProgress + delta)); document.getElementById('progressDisplay').textContent = currentProgress; document.getElementById('progressSlider').value = currentProgress; }
 function syncSlider() { currentProgress = parseInt(document.getElementById('progressSlider').value); document.getElementById('progressDisplay').textContent = currentProgress; }
- 
+
 function saveProgress() {
   if (editMode === 'wo') { saveWOProgress(); return; }
-  const btn = document.getElementById('saveBtn');
+  var btn = document.getElementById('saveBtn');
   btn.textContent = 'Saving...'; btn.disabled = true; btn.classList.add('saving');
-  const notes = document.getElementById('notesInput').value;
+  var notes = document.getElementById('notesInput').value;
   fetch(EXEC_URL + '?action=updateTask&row=' + selectedTask.row + '&pctProgress=' + encodeURIComponent(currentProgress) + '&notes=' + encodeURIComponent(notes), { redirect: 'follow' })
     .then(function() {
       selectedTask.pctProgress = currentProgress; selectedTask.notes = notes;
@@ -682,7 +898,7 @@ function saveProgress() {
       btn.textContent = 'Save → Update Scheduler'; btn.disabled = false; btn.classList.remove('saving');
     });
 }
- 
+
 function saveWOProgress() {
   var btn = document.getElementById('saveBtn');
   btn.textContent = 'Saving...'; btn.disabled = true; btn.classList.add('saving');
@@ -710,7 +926,7 @@ function saveWOProgress() {
   script.src = EXEC_URL + '?action=updateWO&woNumber=' + encodeURIComponent(selectedWONumber) + '&pctProgress=' + encodeURIComponent(currentProgress) + '&notes=' + encodeURIComponent(notes) + '&callback=' + cbName;
   document.body.appendChild(script);
 }
- 
+
 function renderAreaProgress(a) {
   if (!a) { if (summaryData.length === 0) return; a = summaryData[currentArea]; }
   document.getElementById('areaName').textContent = a.area || '—';
@@ -724,11 +940,11 @@ function renderAreaProgress(a) {
   document.getElementById('ap-ff').textContent = formatDate(a.forecastFinish);
   document.getElementById('ap-hlc').textContent = fmt(a.hoursToCritical);
 }
- 
+
 function changeArea(dir) {
   if (summaryData.length === 0) return;
   currentArea = (currentArea + dir + summaryData.length) % summaryData.length;
-  const areaName = summaryData[currentArea].area;
+  var areaName = summaryData[currentArea].area;
   document.getElementById('areaName').textContent = areaName;
   ['ap-mh','ap-dur','ap-aw','ap-pc','ap-pwc','ap-fv','ap-ps','ap-ff','ap-hlc'].forEach(function(id) { document.getElementById(id).textContent = '…'; });
   fetch(EXEC_URL + '?action=setArea&area=' + encodeURIComponent(areaName), { redirect: 'follow' })
@@ -736,14 +952,15 @@ function changeArea(dir) {
     .then(function(data) { if (data && data.success) renderAreaProgress(data.area); else { showToast('Could not load area data', true); renderAreaProgress(); } })
     .catch(function() { showToast('Could not load area data', true); renderAreaProgress(); });
 }
- 
+
 function showScreen(id) { document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); }); document.getElementById('screen-' + id).classList.add('active'); }
-function setNav(active) { document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); }); const btn = document.getElementById('nav-' + active); if (btn) btn.classList.add('active'); }
-function showToast(msg, isError) { const t = document.getElementById('toast'); t.textContent = msg; t.className = isError ? 'error' : ''; t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 3000); }
- 
-const ADMIN_PIN = '1234';
-let pinEntry = '', adminTapCount = 0, adminTapTimer = null;
- 
+function setNav(active) { document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); }); var btn = document.getElementById('nav-' + active); if (btn) btn.classList.add('active'); }
+function showToast(msg, isError) { var t = document.getElementById('toast'); t.textContent = msg; t.className = isError ? 'error' : ''; t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); }, 3000); }
+
+// ── DOCUMENTS ADMIN ──
+var ADMIN_PIN = '1234';
+var pinEntry = '', adminTapCount = 0, adminTapTimer = null;
+
 function adminTap() {
   adminTapCount++;
   clearTimeout(adminTapTimer);
@@ -756,7 +973,7 @@ function adminTap() {
     showScreen('admin');
   }
 }
- 
+
 function pinKey(k) {
   if (pinEntry.length >= 4) return;
   pinEntry += k; updatePinDots();
@@ -773,52 +990,52 @@ function pinKey(k) {
     }, 200);
   }
 }
- 
+
 function pinDel() { pinEntry = pinEntry.slice(0, -1); updatePinDots(); document.getElementById('pinError').textContent = ''; }
-function updatePinDots() { for (let i = 0; i < 4; i++) { document.getElementById('pd' + i).classList.toggle('filled', i < pinEntry.length); } }
- 
+function updatePinDots() { for (var i = 0; i < 4; i++) { document.getElementById('pd' + i).classList.toggle('filled', i < pinEntry.length); } }
+
 function renderAdminDocs() {
-  const list = document.getElementById('adminDocList');
-  let html = '';
+  var list = document.getElementById('adminDocList');
+  var html = '';
   DOCS.forEach(function(doc, idx) {
-    const isHidden = doc.hidden || false;
-    const styleLabel = doc.style || 'dark';
+    var isHidden = doc.hidden || false;
+    var styleLabel = doc.style || 'dark';
     html += '<div class="admin-doc-row' + (isHidden ? ' hidden-row' : '') + '" id="admin-row-' + idx + '">' +
       '<div class="admin-doc-header"><span class="admin-doc-key">' + doc.key + '</span>' +
       '<span class="admin-doc-style ' + styleLabel + '">' + styleLabel + '</span>' +
       '<label class="admin-toggle"><input type="checkbox"' + (!isHidden ? ' checked' : '') + ' onchange="adminToggleHidden(' + idx + ', this.checked)"><span class="admin-toggle-slider"></span></label></div>' +
       '<div class="admin-input-label">Button Label</div>' +
       '<input class="admin-input" id="admin-label-' + idx + '" value="' + (doc.label || '') + '" placeholder="Button label" />' +
-      (doc.action === 'emergency' ? '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Links to Emergency screen — no URL needed</div>' :
-      '<div class="admin-input-label" style="margin-top:8px;">URL</div><input class="admin-input" id="admin-url-' + idx + '" value="' + (doc.url && doc.url !== '#' ? doc.url : '') + '" placeholder="https://..." />') +
+      '<div class="admin-input-label" style="margin-top:8px;">URL</div>' +
+      '<input class="admin-input" id="admin-url-' + idx + '" value="' + (doc.url && doc.url !== '#' ? doc.url : '') + '" placeholder="https://..." />' +
       '</div>';
   });
   list.innerHTML = html;
 }
- 
+
 function adminToggleHidden(idx, isVisible) {
-  const row = document.getElementById('admin-row-' + idx);
+  var row = document.getElementById('admin-row-' + idx);
   if (isVisible) row.classList.remove('hidden-row'); else row.classList.add('hidden-row');
 }
- 
+
 function saveAdminConfig() {
-  const btn = document.getElementById('adminSaveBtn');
+  var btn = document.getElementById('adminSaveBtn');
   btn.disabled = true; btn.textContent = 'Saving...';
   DOCS.forEach(function(doc, idx) {
-    const labelEl = document.getElementById('admin-label-' + idx);
-    const urlEl = document.getElementById('admin-url-' + idx);
-    const toggleEl = document.querySelector('#admin-row-' + idx + ' input[type=checkbox]');
+    var labelEl = document.getElementById('admin-label-' + idx);
+    var urlEl = document.getElementById('admin-url-' + idx);
+    var toggleEl = document.querySelector('#admin-row-' + idx + ' input[type=checkbox]');
     if (labelEl) doc.label = labelEl.value;
     if (urlEl) doc.url = urlEl.value || '#';
     if (toggleEl) doc.hidden = !toggleEl.checked;
   });
   renderDocGrid();
-  const configData = DOCS.map(function(doc) { return [doc.key, doc.label, doc.style, doc.url || '#', doc.hidden ? 'true' : 'false', doc.action || ''].join('|'); }).join('\n');
+  var configData = DOCS.map(function(doc) { return [doc.key, doc.label, doc.style, doc.url || '#', doc.hidden ? 'true' : 'false', doc.action || ''].join('|'); }).join('\n');
   fetch(EXEC_URL + '?action=saveConfig&data=' + encodeURIComponent(configData), { redirect: 'follow' })
     .then(function() { showToast('Config saved'); btn.disabled = false; btn.textContent = 'Save Changes'; showScreen('documents'); setNav('documents'); })
-    .catch(function() { showToast('Saved locally — sheet update failed', true); btn.disabled = false; btn.textContent = 'Save Changes'; });
+    .catch(function() { showToast('Saved locally — server update failed', true); btn.disabled = false; btn.textContent = 'Save Changes'; });
 }
- 
+
 loadData();
 </script>
 </body>
