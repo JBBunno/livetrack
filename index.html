@@ -96,8 +96,8 @@
   .wo-count { color: var(--text-muted); font-size: 11px; white-space: nowrap; }
   .wo-update-bar { background: var(--navy-mid); padding: 10px 14px 10px 38px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--navy-border); gap: 10px; }
   .wo-update-bar-label { color: var(--text-muted); font-size: 11px; font-family: var(--font-display); letter-spacing: 0.5px; }
-  .wo-update-all-btn { background: var(--blue-accent); color: #fff; font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; white-space: nowrap; min-height: 36px; }
-  .wo-update-all-btn:active { background: var(--blue-bright); }
+  .wo-update-all-btn { background: var(--navy-light); color: var(--orange); border: 1px solid var(--orange); font-family: var(--font-display); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; padding: 8px 16px; border-radius: 8px; cursor: pointer; white-space: nowrap; min-height: 36px; }
+  .wo-update-all-btn:active { background: var(--navy-border); }
   .task-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 12px 14px 12px 32px; gap: 6px; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; align-items: center; min-height: 48px; }
   .task-row:active { filter: brightness(1.2); }
   .task-row.complete { background: var(--complete); }
@@ -125,6 +125,13 @@
   .edit-body { flex: 1; padding: 18px; overflow-y: auto; }
   .edit-section-label { font-family: var(--font-display); font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
   .edit-task-title { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text-primary); margin-bottom: 22px; line-height: 1.3; }
+  .wo-confirm-banner { background: rgba(224,120,32,0.14); border: 1px solid var(--orange); border-radius: 10px; padding: 14px 16px; margin: -8px 0 22px; display: none; }
+  .wo-confirm-banner.show { display: block; }
+  .wo-confirm-title { color: var(--orange); font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .wo-confirm-text { color: var(--text-primary); font-size: 14px; line-height: 1.5; margin-bottom: 14px; }
+  .wo-confirm-check { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+  .wo-confirm-check input { width: 22px; height: 22px; accent-color: var(--orange); flex-shrink: 0; margin-top: 1px; }
+  .wo-confirm-check span { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
   .progress-control { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
   .prog-btn { width: 52px; height: 52px; background: var(--navy-light); border: 1px solid var(--navy-border); color: var(--text-primary); font-size: 28px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .prog-btn:active { background: var(--navy-border); }
@@ -309,6 +316,14 @@
     <div class="edit-body">
       <div class="edit-section-label">Task</div>
       <div class="edit-task-title" id="editTaskTitle"></div>
+      <div class="wo-confirm-banner" id="woConfirmBanner">
+        <div class="wo-confirm-title">⚠ Bulk update</div>
+        <div class="wo-confirm-text" id="woConfirmText"></div>
+        <label class="wo-confirm-check">
+          <input type="checkbox" id="woConfirmCheck" onchange="toggleWOConfirm()" />
+          <span>I understand this will update every task listed above, not just one</span>
+        </label>
+      </div>
       <div class="edit-section-label">% Progress</div>
       <div class="progress-control">
         <button class="prog-btn" onclick="changeProgress(-5)">−</button>
@@ -798,7 +813,7 @@ function renderWOList() {
       '<span class="wo-count">' + group.tasks.length + ' task' + (group.tasks.length !== 1 ? 's' : '') + '</span></div>';
     if (isOpen) {
       html += '<div class="wo-update-bar"><span class="wo-update-bar-label">' + group.tasks.length + ' task' + (group.tasks.length !== 1 ? 's' : '') + ' in this WO</span>' +
-        '<button class="wo-update-all-btn" onclick="event.stopPropagation(); openUpdateWO(\'' + woNum + '\')">Update All Tasks</button></div>';
+        '<button class="wo-update-all-btn" onclick="event.stopPropagation(); openUpdateWO(\'' + woNum + '\')">⚠ Update All ' + group.tasks.length + ' Tasks</button></div>';
       group.tasks.forEach(function(task) {
         var pct = (task.pctProgress !== '' && task.pctProgress !== null) ? Number(task.pctProgress) : 0;
         var cls = pct >= 100 ? 'complete' : pct > 0 ? 'inprogress' : 'notstarted';
@@ -858,6 +873,8 @@ function openEditScreen() {
   document.getElementById('progressDisplay').textContent = currentProgress;
   document.getElementById('progressSlider').value = currentProgress;
   document.getElementById('notesInput').value = t.notes || '';
+  document.getElementById('woConfirmBanner').classList.remove('show');
+  document.getElementById('woConfirmCheck').checked = false;
   document.getElementById('saveBtn').textContent = 'Save → Update Scheduler';
   document.getElementById('saveBtn').disabled = false;
   document.getElementById('saveBtn').classList.remove('saving');
@@ -870,14 +887,26 @@ function openUpdateWO(woNum) {
   if (!tasks.length) return;
   var avgPct = Math.round(tasks.reduce(function(sum, t) { return sum + ((t.pctProgress !== '' && t.pctProgress !== null) ? Number(t.pctProgress) : 0); }, 0) / tasks.length);
   currentProgress = avgPct;
-  document.getElementById('editTaskTitle').textContent = (tasks[0].woHeader || woNum) + ' — All ' + tasks.length + ' Tasks';
+  var woLabel = tasks[0].woHeader || woNum;
+  document.getElementById('editTaskTitle').textContent = woLabel + ' — All ' + tasks.length + ' Tasks';
   document.getElementById('progressDisplay').textContent = currentProgress;
   document.getElementById('progressSlider').value = currentProgress;
   document.getElementById('notesInput').value = '';
-  document.getElementById('saveBtn').textContent = 'Save → Update Scheduler';
-  document.getElementById('saveBtn').disabled = false;
+  document.getElementById('woConfirmText').textContent =
+    'This will set the same % progress for all ' + tasks.length + ' tasks in "' + woLabel + '" — not just one task.';
+  document.getElementById('woConfirmCheck').checked = false;
+  document.getElementById('woConfirmBanner').classList.add('show');
+  document.getElementById('saveBtn').textContent = 'Tick the box above to continue';
+  document.getElementById('saveBtn').disabled = true;
   document.getElementById('saveBtn').classList.remove('saving');
   showScreen('editprogress');
+}
+
+function toggleWOConfirm() {
+  var checked = document.getElementById('woConfirmCheck').checked;
+  var btn = document.getElementById('saveBtn');
+  btn.disabled = !checked;
+  btn.textContent = checked ? 'Confirm → Update All Tasks' : 'Tick the box above to continue';
 }
 
 function changeProgress(delta) { currentProgress = Math.max(0, Math.min(100, currentProgress + delta)); document.getElementById('progressDisplay').textContent = currentProgress; document.getElementById('progressSlider').value = currentProgress; }
@@ -900,6 +929,7 @@ function saveProgress() {
 }
 
 function saveWOProgress() {
+  if (!document.getElementById('woConfirmCheck').checked) { toggleWOConfirm(); return; }
   var btn = document.getElementById('saveBtn');
   btn.textContent = 'Saving...'; btn.disabled = true; btn.classList.add('saving');
   var notes = document.getElementById('notesInput').value;
@@ -915,11 +945,11 @@ function saveWOProgress() {
       editMode = 'task'; selectedWONumber = null; renderWOList(); showScreen('workorders');
     } else {
       showToast('WO save failed — try again', true);
-      btn.textContent = 'Save → Update Scheduler'; btn.disabled = false; btn.classList.remove('saving');
+      btn.textContent = 'Confirm → Update All Tasks'; btn.disabled = false; btn.classList.remove('saving');
     }
   };
   window[cbName + '_timeout'] = setTimeout(function() {
-    if (window[cbName]) { delete window[cbName]; showToast('WO save timed out — try again', true); btn.textContent = 'Save → Update Scheduler'; btn.disabled = false; btn.classList.remove('saving'); }
+    if (window[cbName]) { delete window[cbName]; showToast('WO save timed out — try again', true); btn.textContent = 'Confirm → Update All Tasks'; btn.disabled = false; btn.classList.remove('saving'); }
   }, 30000);
   var script = document.createElement('script');
   script.id = cbName;
