@@ -813,7 +813,7 @@ function renderWOList() {
       '<span class="wo-count">' + group.tasks.length + ' task' + (group.tasks.length !== 1 ? 's' : '') + '</span></div>';
     if (isOpen) {
       html += '<div class="wo-update-bar"><span class="wo-update-bar-label">' + group.tasks.length + ' task' + (group.tasks.length !== 1 ? 's' : '') + ' in this WO</span>' +
-        '<button class="wo-update-all-btn" onclick="event.stopPropagation(); openUpdateWO(\'' + woNum + '\')">⚠ Update All ' + group.tasks.length + ' Tasks in ths Work Order</button></div>';
+        '<button class="wo-update-all-btn" onclick="event.stopPropagation(); openUpdateWO(\'' + woNum + '\')">⚠ BULK Update All ' + group.tasks.length + ' Tasks or select below for single task update</button></div>';
       group.tasks.forEach(function(task) {
         var pct = (task.pctProgress !== '' && task.pctProgress !== null) ? Number(task.pctProgress) : 0;
         var cls = pct >= 100 ? 'complete' : pct > 0 ? 'inprogress' : 'notstarted';
