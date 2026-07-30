@@ -1,15 +1,3 @@
-/**
- * Drop this into the LiveTrack end-user pages (GitHub Pages front end).
- * Before this file loads, include in your HTML <head> or before </body>:
- *
- *   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
- *   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
- *   <script src="subscribe.js"></script>
- *
- * Fill in the three placeholders below.
- */
-
-// Same config as firebase-messaging-sw.js
 const firebaseConfig = {
   apiKey: 'AIzaSyDmIWQAMLNrTTehrGPhhWCOSK6idwNoFxw',
   authDomain: 'app-message-push-a3eef.firebaseapp.com',
@@ -19,47 +7,51 @@ const firebaseConfig = {
   appId: '1:712488130034:web:53613035796a1bd8ac876b'
 };
 
-// Firebase Console > Project settings > Cloud Messaging > Web configuration > Web Push certificates
 const VAPID_KEY = 'BN3MDRoU5_1syHPZIbPtrI8_aAYIVPf7qhVNrNN0xKnFkDNCuhC8SKjdlWlYLN7-QqGEug-zgac9r2-eLyq72iw';
-
-// Your deployed GAS Web App URL, ending in /exec
 const GAS_ENDPOINT = 'https://script.google.com/macros/s/AKfycby0Ub48y7MF1y9soeHXPP7Kr8zuaiXfDA96SE0EDIbzF-9ozmoENxKIIwq4IOU033zkmQ/exec';
 
-async function initPushNotifications() {
+let swRegistration = null;
+
+async function enableLiveTrackNotifications() {
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
     console.warn('LiveTrack: push notifications are not supported in this browser.');
-    return;
+    return false;
   }
 
-  firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
   const messaging = firebase.messaging();
 
-  const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js');
+  try {
+    swRegistration = swRegistration || await navigator.serviceWorker.register('firebase-messaging-sw.js');
+  } catch (err) {
+    console.error('LiveTrack: service worker registration failed.', err);
+    return false;
+  }
 
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') {
     console.warn('LiveTrack: notification permission was not granted.');
-    return;
+    return false;
   }
 
   let token;
   try {
     token = await messaging.getToken({
       vapidKey: VAPID_KEY,
-      serviceWorkerRegistration: registration
+      serviceWorkerRegistration: swRegistration
     });
   } catch (err) {
     console.error('LiveTrack: could not get push token.', err);
-    return;
+    return false;
   }
 
   if (!token) {
     console.warn('LiveTrack: no push token returned.');
-    return;
+    return false;
   }
 
-  // Send with text/plain to avoid a CORS preflight (GAS Web Apps can't
-  // answer OPTIONS requests). The GAS side still parses this as JSON.
   await fetch(GAS_ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -67,10 +59,44 @@ async function initPushNotifications() {
   });
 
   console.log('LiveTrack: registered for push notifications.');
+  return true;
 }
 
-// Call this from a user gesture (e.g. a "Enable notifications" button) for
-// best results — some browsers block the permission prompt if it's not
-// triggered by a click. Calling it on page load works in most desktop
-// browsers but is worth testing on your target devices.
-initPushNotifications();
+function injectEnableButton() {
+  if (document.getElementById('ltNotifyBtn')) return;
+
+  const btn = document.createElement('button');
+  btn.id = 'ltNotifyBtn';
+  btn.textContent = '🔔 Enable Notifications';
+  btn.style.cssText =
+    'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;' +
+    'background:#2d8fe8;color:#fff;border:none;padding:12px 22px;border-radius:24px;' +
+    'font-size:14px;font-family:sans-serif;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,0.35);';
+
+  btn.onclick = async function () {
+    btn.disabled = true;
+    btn.textContent = 'Enabling…';
+    const ok = await enableLiveTrackNotifications();
+    if (ok) {
+      btn.textContent = '✓ Notifications enabled';
+      setTimeout(function () { btn.remove(); }, 2000);
+    } else {
+      btn.disabled = false;
+      btn.textContent = '🔔 Enable Notifications';
+    }
+  };
+
+  document.body.appendChild(btn);
+}
+
+if ('Notification' in window && 'serviceWorker' in navigator) {
+  if (Notification.permission === 'granted') {
+    enableLiveTrackNotifications();
+  } else if (Notification.permission === 'default') {
+    injectEnableButton();
+  } else {
+    console.warn('LiveTrack: notifications are blocked for this site. Enable them in your browser\'s site settings to receive alerts.');
+  }
+} else {
+  console.warn('LiveTrack: push notifications are not supported in this browser.');
+}
