@@ -34,7 +34,7 @@ async function initPushNotifications() {
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
 
-  const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+  const registration = await navigator.serviceWorker.register('firebase-messaging-sw.js');
 
   const permission = await Notification.requestPermission();
   if (permission !== 'granted') {
