@@ -22,7 +22,16 @@ async function enableLiveTrackNotifications() {
     firebase.initializeApp(firebaseConfig);
   }
   const messaging = firebase.messaging();
-
+// Foreground messages don't trigger the service worker's background
+  // handler — the payload arrives here instead, so show it manually.
+  messaging.onMessage(function (payload) {
+    const notification = payload.notification || {};
+    const title = notification.title || 'LiveTrack';
+    const body = notification.body || '';
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body: body, icon: '/icon.png' });
+    }
+  });
   try {
     swRegistration = swRegistration || await navigator.serviceWorker.register('firebase-messaging-sw.js');
   } catch (err) {
